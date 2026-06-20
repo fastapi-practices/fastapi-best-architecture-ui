@@ -1,5 +1,6 @@
 import type {
   BarSeriesOption,
+  GaugeSeriesOption,
   LineSeriesOption,
   PieSeriesOption,
   RadarSeriesOption,
@@ -17,6 +18,7 @@ import type { ComposeOption } from 'echarts/core';
 export type ECOption = ComposeOption<
   | BarSeriesOption
   | DatasetComponentOption
+  | GaugeSeriesOption
   | GridComponentOption
   | LegendComponentOption
   | LineSeriesOption
