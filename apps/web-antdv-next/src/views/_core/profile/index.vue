@@ -37,7 +37,7 @@ const onTabChange = (value: string) => {
     :right-width="70"
   >
     <template #left>
-      <div class="mr-3">
+      <div>
         <BasicInfo />
       </div>
     </template>

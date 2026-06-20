@@ -284,7 +284,7 @@ onMounted(() => {
     :right-width="80"
   >
     <template #left>
-      <div class="mr-2 h-full overflow-y-auto rounded-[var(--radius)] bg-card">
+      <div class="h-full overflow-y-auto rounded-[var(--radius)] bg-card">
         <div class="mt-1 p-2">
           <a-input-search
             v-model:value="searchDeptValue"
