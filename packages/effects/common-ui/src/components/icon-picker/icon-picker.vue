@@ -11,13 +11,13 @@ import {
   Button,
   Input,
   Pagination,
+  PaginationContent,
   PaginationEllipsis,
   PaginationFirst,
+  PaginationItem,
   PaginationLast,
-  PaginationList,
-  PaginationListItem,
   PaginationNext,
-  PaginationPrev,
+  PaginationPrevious,
   VbenIcon,
   VbenIconButton,
   VbenPopover,
@@ -147,6 +147,9 @@ const searchInputProps = computed(() => {
 
 function updateCurrentSelect(v: string) {
   currentSelect.value = v;
+  if (props.modelValueProp === 'modelValue') {
+    modelValue.value = v;
+  }
   const eventKey = `onUpdate:${props.modelValueProp}`;
   if (attrs[eventKey] && isFunction(attrs[eventKey])) {
     attrs[eventKey](v);
@@ -253,14 +256,14 @@ defineExpose({ toggleOpenState, open, close });
           size="small"
           @update:page="handlePageChange"
         >
-          <PaginationList
+          <PaginationContent
             v-slot="{ items }"
             class="flex w-full items-center gap-1"
           >
             <PaginationFirst class="size-5" />
-            <PaginationPrev class="size-5" />
+            <PaginationPrevious class="size-5" />
             <template v-for="(item, index) in items">
-              <PaginationListItem
+              <PaginationItem
                 v-if="item.type === 'page'"
                 :key="index"
                 :value="item.value"
@@ -272,7 +275,7 @@ defineExpose({ toggleOpenState, open, close });
                 >
                   {{ item.value }}
                 </Button>
-              </PaginationListItem>
+              </PaginationItem>
               <PaginationEllipsis
                 v-else
                 :key="item.type"
@@ -282,7 +285,7 @@ defineExpose({ toggleOpenState, open, close });
             </template>
             <PaginationNext class="size-5" />
             <PaginationLast class="size-5" />
-          </PaginationList>
+          </PaginationContent>
         </Pagination>
       </div>
     </template>

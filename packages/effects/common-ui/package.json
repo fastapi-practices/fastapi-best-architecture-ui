@@ -50,7 +50,7 @@
     "tippy.js": "catalog:",
     "vue": "catalog:",
     "vue-codemirror6": "catalog:",
-    "vue-json-viewer": "catalog:",
+    "vue-json-pretty": "catalog:",
     "vue-router": "catalog:",
     "vue-tippy": "catalog:"
   },

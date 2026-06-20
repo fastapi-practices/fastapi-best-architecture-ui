@@ -1,16 +1,17 @@
 // stores/websocket.ts
+import type { Socket } from 'socket.io-client';
+
 import { computed, ref } from 'vue';
 
 import { useAccessStore } from '@vben/stores';
 
 import { defineStore } from 'pinia';
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 export const useWebSocketStore = defineStore('websocket', () => {
   const socket = ref<null | Socket>(null);
   const isConnected = ref(false);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  const eventCleanupFunctions = ref<Function[]>([]);
+  const eventCleanupFunctions = ref<Array<() => void>>([]);
 
   // 连接配置常量
   const WS_URL = import.meta.env.VITE_GLOB_API_URL;

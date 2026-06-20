@@ -23,6 +23,7 @@ package-lock.json
 .VSCodeCounter
 **/backend-mock/data
 .omx
+.pnpm-store
 # local env files
 .env.local
 .env.*.local
@@ -57,6 +58,8 @@ vite.config.ts.*
 .claude
 .codex
 skills-lock.json
+.atomcode
+datalog
 
 # 升级 vben 时需要删除的文件(夹)
 .changeset

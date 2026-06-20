@@ -6,14 +6,13 @@ import type { Component, HtmlHTMLAttributes, Ref } from 'vue';
 import type { VbenButtonProps } from '@vben-core/shadcn-ui';
 import type { ClassType, MaybeComputedRef } from '@vben-core/typings';
 
-import type { FormApi } from './form-api';
-
 export type FormLayout = 'horizontal' | 'inline' | 'vertical';
 
 export type BaseFormComponentType =
   | 'DefaultButton'
   | 'PrimaryButton'
   | 'VbenCheckbox'
+  | 'VbenFormFieldArray'
   | 'VbenInput'
   | 'VbenInputPassword'
   | 'VbenPinInput'
@@ -307,6 +306,32 @@ export type FormSchema<
   P extends Record<string, any> = Record<never, never>,
 > = FormSchemaDiscriminated<T, P> | FormSchemaFallback<T>;
 
+/**
+ * 数组编辑器（VbenFormFieldArray）的组件参数
+ */
+export interface VbenFormFieldArrayProps<
+  T extends BaseFormComponentType = BaseFormComponentType,
+  P extends Record<string, any> = Record<never, never>,
+> {
+  /** 操作列表头文案 */
+  actionText?: string;
+  /** 「添加」按钮文案 */
+  addButtonText?: string;
+  /** 新增一行时生成的默认数据；缺省时按列定义的 fieldName 生成空对象 */
+  createRow?: () => Record<string, any>;
+  disabled?: boolean;
+  /** 空数据文案 */
+  emptyText?: string;
+  /** 最多行数 */
+  max?: number;
+  /** 最少行数 */
+  min?: number;
+  /** 列定义，每一列是一个子字段（复用 FormSchema） */
+  schema: FormSchema<T, P>[];
+  /** 是否显示序号列 */
+  showIndex?: boolean;
+}
+
 export type HandleSubmitFn = (
   values: Record<string, any>,
 ) => Promise<void> | void;
@@ -315,7 +340,7 @@ export type HandleResetFn = (
   values: Record<string, any>,
 ) => Promise<void> | void;
 
-export type FieldMappingTime = [
+export type FieldMappingTimeItem = [
   string,
   [string, string],
   (
@@ -324,7 +349,9 @@ export type FieldMappingTime = [
     | null
     | string
   )?,
-][];
+];
+
+export type FieldMappingTime = FieldMappingTimeItem[];
 
 export type ArrayToStringFields = Array<
   | [string[], string?] // 嵌套数组格式，可选分隔符
@@ -448,6 +475,10 @@ export interface VbenFormProps<
   arrayToStringFields?: ArrayToStringFields;
 
   /**
+   * submitOnChange改变时防抖时间 | 默认300ms
+   */
+  changeDebouncedTime?: number;
+  /**
    * 表单字段映射
    */
   fieldMappingTime?: FieldMappingTime;
@@ -470,6 +501,7 @@ export interface VbenFormProps<
     values: Record<string, any>,
     fieldsChanged: string[],
   ) => void;
+
   /**
    * 重置按钮参数
    */
@@ -505,7 +537,7 @@ export interface VbenFormProps<
   submitOnEnter?: boolean;
 }
 
-export type ExtendedFormApi = FormApi & {
+export type ExtendedFormApi = import('./form-api').FormApi & {
   useStore: <T = NoInfer<VbenFormProps>>(
     selector?: (state: NoInfer<VbenFormProps>) => T,
   ) => Readonly<Ref<T>>;
