@@ -18,7 +18,13 @@ export const overridesPreferences = defineOverridesPreferences({
   logo: {
     source: 'https://wu-clan.github.io/picx-images-hosting/logo/fba.png',
   },
+  shortcutKeys: {
+    enable: false,
+  },
   theme: {
     mode: 'auto',
+  },
+  widget: {
+    timezone: false,
   },
 });
