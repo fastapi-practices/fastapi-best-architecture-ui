@@ -3,9 +3,9 @@ import { h, nextTick, onMounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import Email from '#/plugins/config/views/email.vue';
-import Login from '#/plugins/config/views/login.vue';
-import UserSecurity from '#/plugins/config/views/user-security.vue';
+import Email from './email.vue';
+import Login from './login.vue';
+import UserSecurity from './user-security.vue';
 
 const activeKey = ref('0');
 

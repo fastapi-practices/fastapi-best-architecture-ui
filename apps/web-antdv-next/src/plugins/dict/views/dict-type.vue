@@ -2,15 +2,16 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type {
+  CreateDictTypeParams,
+  DictDataResult,
+  DictTypeResult,
+} from '../api';
+
+import type {
   OnActionClickParams,
   VxeGridListeners,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type {
-  CreateDictTypeParams,
-  DictDataResult,
-  DictTypeResult,
-} from '#/plugins/dict/api';
 
 import { computed, ref } from 'vue';
 
@@ -22,19 +23,19 @@ import { message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+
 import {
   createDictTypeApi,
   deleteDictTypeApi,
   getDictTypeListApi,
   updateDictTypeApi,
-} from '#/plugins/dict/api';
-import { emitter } from '#/plugins/dict/views/mitt';
-
+} from '../api';
 import {
   dictTypeSchema,
   queryDictTypeSchema,
   useDictTypeColumns,
 } from './data';
+import { emitter } from './mitt';
 
 const formOptions: VbenFormProps = {
   wrapperClass: 'md:grid-cols-2',

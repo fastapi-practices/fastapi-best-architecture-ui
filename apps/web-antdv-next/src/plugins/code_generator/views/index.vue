@@ -2,14 +2,15 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type {
-  OnActionClickParams,
-  VxeTableGridOptions,
-} from '#/adapter/vxe-table';
-import type {
   CodeGenBusinessImportParams,
   CodeGenBusinessParams,
   CodeGenBusinessResult,
-} from '#/plugins/code_generator/api';
+} from '../api';
+
+import type {
+  OnActionClickParams,
+  VxeTableGridOptions,
+} from '#/adapter/vxe-table';
 
 import { computed, ref } from 'vue';
 
@@ -21,14 +22,14 @@ import { message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+
 import {
   createCodeGenBusinessApi,
   deleteCodeGenBusinessApi,
   getCodeGenBusinessListApi,
   importCodeGenDbTableApi,
   updateCodeGenBusinessApi,
-} from '#/plugins/code_generator/api';
-
+} from '../api';
 import ExtraDrawer from './column.vue';
 import { editSchema, importSchema, querySchema, useColumns } from './data';
 

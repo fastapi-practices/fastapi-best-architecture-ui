@@ -1,6 +1,7 @@
+import type { DictDataResult, DictTypeResult } from '../api';
+
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeGridProps } from '#/adapter/vxe-table';
-import type { DictDataResult, DictTypeResult } from '#/plugins/dict/api';
 
 import { h } from 'vue';
 
@@ -9,8 +10,9 @@ import { $t } from '@vben/locales';
 import { Tag } from 'antdv-next';
 
 import { z } from '#/adapter/form';
-import { getAllDictTypeApi } from '#/plugins/dict/api';
 import { DictEnum, getDictOptions } from '#/utils/dict';
+
+import { getAllDictTypeApi } from '../api';
 
 export const queryDictTypeSchema: VbenFormSchema[] = [
   {

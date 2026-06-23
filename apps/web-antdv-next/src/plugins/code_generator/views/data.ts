@@ -1,20 +1,19 @@
+import type { CodeGenBusinessResult, CodeGenColumnResult } from '../api';
+
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeGridProps } from '#/adapter/vxe-table';
-import type {
-  CodeGenBusinessResult,
-  CodeGenColumnResult,
-} from '#/plugins/code_generator/api';
 
 import { ref } from 'vue';
 
 import { $t } from '@vben/locales';
 
+import { DictEnum, getDictOptions } from '#/utils/dict';
+
 import {
   getAllCodeGenBusinessApi,
   getAllCodeGenColumnTypeApi,
   getCodeGenDbTableApi,
-} from '#/plugins/code_generator/api';
-import { DictEnum, getDictOptions } from '#/utils/dict';
+} from '../api';
 
 export const querySchema: VbenFormSchema[] = [
   {

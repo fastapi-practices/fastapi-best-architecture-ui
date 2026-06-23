@@ -1,0 +1,6 @@
+{
+  "name": "@fba-ui/config",
+  "version": "5.7.0",
+  "private": true,
+  "type": "module"
+}

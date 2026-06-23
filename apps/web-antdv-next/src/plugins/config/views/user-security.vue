@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ConfigResult } from '#/plugins/config/api';
+import type { ConfigResult } from '../api';
 
 import { ref } from 'vue';
 
@@ -10,8 +10,9 @@ import { $t } from '@vben/locales';
 import { message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
-import { getAllConfigApi, updateConfigApi } from '#/plugins/config/api';
-import { userSecuritySchema } from '#/plugins/config/views/data';
+
+import { getAllConfigApi, updateConfigApi } from '../api';
+import { userSecuritySchema } from './data';
 
 const [Form, formApi] = useVbenForm({
   showDefaultActions: false,

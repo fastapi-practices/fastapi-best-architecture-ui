@@ -1,6 +1,7 @@
+import type { SysNoticeResult } from '../api';
+
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeGridProps } from '#/adapter/vxe-table';
-import type { SysNoticeResult } from '#/plugins/notice/api';
 
 import { h } from 'vue';
 

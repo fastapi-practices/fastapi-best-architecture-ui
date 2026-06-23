@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
   {
     name: 'PluginConfig',
     path: '/plugins/config',
-    component: () => import('#/plugins/config/views/index.vue'),
+    component: () => import('../views/index.vue'),
     meta: {
       title: $t('config.menu'),
       icon: 'codicon:symbol-parameter',

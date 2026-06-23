@@ -17,7 +17,7 @@ import { $t } from '@vben/locales';
 import { useClipboard } from '@vueuse/core';
 import { message } from 'antdv-next';
 
-import { previewCodeGenApi } from '#/plugins/code_generator/api';
+import { previewCodeGenApi } from '../api';
 
 interface TreeNode {
   children: TreeNode[];

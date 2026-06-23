@@ -2,14 +2,15 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type {
-  OnActionClickParams,
-  VxeTableGridOptions,
-} from '#/adapter/vxe-table';
-import type {
   CreateSysNoticeParams,
   SysNoticeResult,
   UpdateSysNoticeParams,
-} from '#/plugins/notice/api';
+} from '../api';
+
+import type {
+  OnActionClickParams,
+  VxeTableGridOptions,
+} from '#/adapter/vxe-table';
 
 import { computed, ref } from 'vue';
 
@@ -26,13 +27,13 @@ import { message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+
 import {
   createSysNoticeApi,
   deleteSysNoticeApi,
   getNoticeListApi,
   updateSysNoticeApi,
-} from '#/plugins/notice/api';
-
+} from '../api';
 import { querySchema, schema, useColumns } from './data';
 
 const formOptions: VbenFormProps = {

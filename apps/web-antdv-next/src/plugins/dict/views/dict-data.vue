@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { VbenFormProps } from '@vben/common-ui';
 
+import type { CreateDictDataParams, DictDataResult } from '../api';
+
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { CreateDictDataParams, DictDataResult } from '#/plugins/dict/api';
 
 import { computed, ref } from 'vue';
 
@@ -17,19 +18,19 @@ import { message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+
 import {
   createDictDataApi,
   deleteDictDataApi,
   getDictDataListApi,
   updateDictDataApi,
-} from '#/plugins/dict/api';
-import { emitter } from '#/plugins/dict/views/mitt';
-
+} from '../api';
 import {
   dictDataSchema,
   queryDictDataSchema,
   useDictDataColumns,
 } from './data';
+import { emitter } from './mitt';
 
 const formOptions: VbenFormProps = {
   collapsed: true,

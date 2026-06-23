@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ColPage } from '@vben/common-ui';
 
-import DictData from '#/plugins/dict/views/dict-data.vue';
-import DictType from '#/plugins/dict/views/dict-type.vue';
+import DictData from './dict-data.vue';
+import DictType from './dict-type.vue';
 </script>
 
 <template>

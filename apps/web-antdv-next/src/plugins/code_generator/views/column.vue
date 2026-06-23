@@ -1,12 +1,10 @@
 <script lang="ts" setup>
+import type { CodeGenColumnParams, CodeGenColumnResult } from '../api';
+
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type {
-  CodeGenColumnParams,
-  CodeGenColumnResult,
-} from '#/plugins/code_generator/api';
 
 import { computed, h, ref } from 'vue';
 
@@ -24,6 +22,7 @@ import { Alert, message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+
 import {
   createCodeGenColumnApi,
   deleteCodeGenColumnApi,
@@ -32,8 +31,7 @@ import {
   getAllCodeGenBusinessColumnApi,
   getCodeGenPathApi,
   updateCodeGenColumnApi,
-} from '#/plugins/code_generator/api';
-
+} from '../api';
 import { columnSchema, useColumnColumns } from './data';
 import ExtraModal from './preview.vue';
 

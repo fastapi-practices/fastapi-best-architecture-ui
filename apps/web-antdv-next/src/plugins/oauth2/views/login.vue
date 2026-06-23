@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { SvgGithubIcon, SvgGoogleIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
-import { getOAuth2Github, getOAuth2Google } from '#/plugins/oauth2/api';
+import { getOAuth2Github, getOAuth2Google } from '../api';
 
 defineOptions({ name: 'OAuth2Login' });
 
