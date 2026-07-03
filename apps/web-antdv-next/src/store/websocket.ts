@@ -12,6 +12,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
   const socket = ref<null | Socket>(null);
   const isConnected = ref(false);
   const eventCleanupFunctions = ref<Array<() => void>>([]);
+  const reconnectCallbacks = ref(new Set<() => void>());
 
   // 连接配置常量
   const WS_URL = import.meta.env.VITE_GLOB_API_URL;
@@ -106,6 +107,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
 
     socket.value.io.on('reconnect', () => {
       isConnected.value = true;
+      reconnectCallbacks.value.forEach((callback) => callback());
     });
 
     socket.value.io.on('reconnect_failed', () => {
@@ -174,6 +176,18 @@ export const useWebSocketStore = defineStore('websocket', () => {
   };
 
   /**
+   * 监听 WebSocket 重连成功事件
+   * @param callback 重连成功后的回调
+   */
+  const onReconnect = (callback: () => void) => {
+    reconnectCallbacks.value.add(callback);
+
+    return () => {
+      reconnectCallbacks.value.delete(callback);
+    };
+  };
+
+  /**
    * 移除事件监听
    * @param event 事件名称
    * @param callback 可选，特定回调函数
@@ -231,6 +245,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
     disconnect,
     emit,
     on,
+    onReconnect,
     off,
     cleanupEvents,
   };
