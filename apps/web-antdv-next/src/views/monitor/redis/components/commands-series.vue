@@ -25,6 +25,8 @@ const labelColor = computed(() =>
 
 const renderChart = () => {
   renderEcharts({
+    animationDuration: 600,
+    animationDurationUpdate: 600,
     series: [
       {
         type: 'pie',
