@@ -154,6 +154,8 @@ const [Modal, modalApi] = useVbenModal({
         }
         formData.value = data;
         formApi.setValues(formData.value);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -166,14 +168,16 @@ const [Modal, modalApi] = useVbenModal({
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          新增部门
+          {{ $t('system.dept.add') }}
         </VbenButton>
       </template>
       <template #toolbar-tools>
-        <a-button class="mr-2" type="primary" @click="expandAll">
-          展开全部
-        </a-button>
-        <a-button type="primary" @click="collapseAll">折叠全部</a-button>
+        <VbenButton class="mr-2" variant="outline" @click="expandAll">
+          {{ $t('common.expandAll') }}
+        </VbenButton>
+        <VbenButton variant="outline" @click="collapseAll">
+          {{ $t('common.collapseAll') }}
+        </VbenButton>
       </template>
     </Grid>
     <Modal :title="modalTitle">

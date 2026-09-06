@@ -96,7 +96,7 @@ function onActionClick({
       <template #toolbar-actions>
         <div class="mr-1 pl-1 text-[1rem]">
           <div>
-            当前已登录人数：
+            {{ $t('page.monitor.online.onlineCount') }}：
             <span class="font-bold text-primary">{{ onlineCount }}</span>
           </div>
         </div>

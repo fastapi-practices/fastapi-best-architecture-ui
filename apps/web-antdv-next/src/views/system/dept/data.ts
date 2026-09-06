@@ -12,7 +12,7 @@ export const querySchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'name',
-    label: '部门名称',
+    label: $t('system.dept.name'),
   },
   {
     component: 'Input',
@@ -49,11 +49,16 @@ export function useColumns(
   onActionClick?: OnActionClickFn<SysDeptTreeResult>,
 ): VxeGridProps['columns'] {
   return [
-    { field: 'name', title: '名称', align: 'left', treeNode: true },
-    { field: 'leader', title: '负责人' },
-    { field: 'phone', title: '手机号码' },
-    { field: 'email', title: '邮箱' },
-    { field: 'sort', title: '排序' },
+    {
+      field: 'name',
+      title: $t('system.dept.name'),
+      align: 'left',
+      treeNode: true,
+    },
+    { field: 'leader', title: $t('system.dept.leader') },
+    { field: 'phone', title: $t('system.dept.phone') },
+    { field: 'email', title: $t('system.dept.email') },
+    { field: 'sort', title: $t('system.dept.sort') },
     {
       field: 'status',
       title: '状态',
@@ -101,7 +106,7 @@ export const schema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'name',
-    label: '部门名称',
+    label: $t('system.dept.name'),
     rules: 'required',
   },
   {
@@ -116,6 +121,17 @@ export const schema: VbenFormSchema[] = [
     },
     fieldName: 'parent_id',
     label: '父级部门',
+  },
+  {
+    component: 'InputNumber',
+    componentProps: {
+      class: 'w-full',
+      min: 0,
+    },
+    defaultValue: 0,
+    fieldName: 'sort',
+    label: $t('system.dept.sort'),
+    rules: 'required',
   },
   {
     component: 'Input',
@@ -137,7 +153,12 @@ export const schema: VbenFormSchema[] = [
     },
     fieldName: 'email',
     label: '邮箱地址',
-    rules: z.string().email({ message: '无效的邮箱地址' }).optional(),
+    rules: z
+      .string()
+      .optional()
+      .refine((val) => !val || z.string().email().safeParse(val).success, {
+        message: $t('system.dept.invalidEmail'),
+      }),
   },
   {
     component: 'RadioGroup',

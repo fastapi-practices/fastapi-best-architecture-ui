@@ -101,6 +101,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 });
 
 function onRefresh() {
+  checkedRows.value = [];
   gridApi.query();
 }
 
@@ -146,7 +147,7 @@ const deleteLoading = ref<boolean>(false);
 const deleteTaskResult = async () => {
   confirm({
     icon: 'warning',
-    content: '确定删除已勾选的记录吗？',
+    content: $t('scheduler.deleteConfirm'),
   }).then(async () => {
     deleteLoading.value = true;
     try {
@@ -166,9 +167,12 @@ watch(checkedRows, () => {
   deleteDisable.value = checkedRows.value.length === 0;
 });
 
-onMounted(() => {
-  if (route.query) {
-    gridApi.reload({ name: route.query.name ?? undefined });
+onMounted(async () => {
+  const name =
+    typeof route.query.name === 'string' ? route.query.name : undefined;
+  if (name) {
+    await gridApi.formApi.setValues({ name });
+    await gridApi.reload({ name });
   }
 });
 </script>
@@ -184,7 +188,7 @@ onMounted(() => {
           @click="deleteTaskResult"
         >
           <MaterialSymbolsDelete class="size-5" />
-          删除记录
+          {{ $t('scheduler.deleteRecords') }}
         </VbenButton>
       </template>
     </Grid>

@@ -145,6 +145,8 @@ const [Modal, modalApi] = useVbenModal({
       if (data) {
         formData.value = data;
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -175,7 +177,7 @@ const openDrawer = async (pk: number) => {
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          新增角色
+          {{ $t('system.role.add') }}
         </VbenButton>
       </template>
     </Grid>
