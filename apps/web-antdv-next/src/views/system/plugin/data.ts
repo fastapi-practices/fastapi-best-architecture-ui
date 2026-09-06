@@ -2,72 +2,82 @@ import type { VbenFormSchema } from '#/adapter/form';
 
 import { h } from 'vue';
 
-import { Button } from 'antdv-next';
+import { $t } from '@vben/locales';
+
+import { Button, message } from 'antdv-next';
 
 import { DictEnum, getDictOptions } from '#/utils/dict';
 
-export function userSchema(fileList: any): VbenFormSchema[] {
+export function getZipFile(value: unknown): File | undefined {
+  const item = Array.isArray(value) ? value[0] : value;
+  if (!item) {
+    return undefined;
+  }
+  if (item instanceof File) {
+    return item.name.toLowerCase().endsWith('.zip') ? item : undefined;
+  }
+  const origin = (item as { originFileObj?: File }).originFileObj;
+  if (origin instanceof File && origin.name.toLowerCase().endsWith('.zip')) {
+    return origin;
+  }
+  return undefined;
+}
+
+export function createInstallSchema(): VbenFormSchema[] {
   return [
     {
       component: 'RadioGroup',
       defaultValue: 0,
       componentProps: {
-        // options: [
-        //   {
-        //     label: '压缩包',
-        //     value: 0,
-        //   },
-        //   {
-        //     label: 'GIT',
-        //     value: 1,
-        //   },
-        // ],
+        buttonStyle: 'solid',
+        optionType: 'button',
         options: getDictOptions(DictEnum.SYS_PLUGIN_TYPE),
       },
       fieldName: 'installType',
-      label: '安装方式',
+      label: $t('system.plugin.installType'),
+      rules: 'required',
     },
     {
       component: 'Upload',
-      dependencies: {
-        show: (values) => values && values.installType === 0,
-        triggerFields: ['installType'],
-      },
       componentProps: {
-        name: 'file',
-        accept: '.zip',
+        accept: '.zip,application/zip,application/x-zip-compressed',
         maxCount: 1,
         multiple: false,
-        directory: false,
-        fileList: fileList.value,
-        beforeUpload: (file: any) => {
-          fileList.value = [file];
+        beforeUpload: (file: File) => {
+          if (!file.name.toLowerCase().endsWith('.zip')) {
+            message.warning($t('system.plugin.zipInvalid'));
+            return false;
+          }
           return false;
         },
-        onRemove: () => {
-          fileList.value = [];
-        },
       },
+      dependencies: {
+        show: (values) => Number(values.installType) === 0,
+        triggerFields: ['installType'],
+      },
+      fieldName: 'uploadField',
+      help: $t('system.plugin.zipHelp'),
+      label: $t('system.plugin.zip'),
       renderComponentContent: () => ({
         default: () => {
-          return h(Button, {}, { default: () => 'Upload' });
+          return h(Button, {}, { default: () => $t('system.plugin.upload') });
         },
       }),
-      fieldName: 'uploadField',
-      label: 'ZIP 压缩包',
       rules: 'required',
-      help: '仅能上传一个 zip 压缩包文件，重新上传则覆盖',
     },
     {
       component: 'Input',
+      componentProps: {
+        placeholder: $t('system.plugin.gitPlaceholder'),
+      },
       dependencies: {
-        show: (values) => values && values.installType === 1,
+        show: (values) => Number(values.installType) === 1,
         triggerFields: ['installType'],
       },
       fieldName: 'repo_url',
-      label: 'GIT 地址',
+      help: $t('system.plugin.gitHelp'),
+      label: $t('system.plugin.git'),
       rules: 'required',
-      help: '仓库内容无法实时检测，请谨慎操作，避免非插件代码植入',
     },
   ];
 }
