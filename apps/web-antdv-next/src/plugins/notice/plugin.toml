@@ -1,0 +1,6 @@
+[plugin]
+summary = 'Notice UI'
+version = '0.0.1'
+description = 'fba Notice 插件的前端实现'
+author = 'wu-clan'
+tags = ['other']

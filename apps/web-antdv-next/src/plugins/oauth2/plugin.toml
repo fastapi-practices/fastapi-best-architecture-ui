@@ -1,0 +1,6 @@
+[plugin]
+summary = 'OAuth2 UI'
+version = '0.0.1'
+description = 'fba OAuth2 插件的前端实现'
+author = 'wu-clan'
+tags = ['auth']

@@ -1,0 +1,6 @@
+[plugin]
+summary = 'Email UI'
+version = '0.0.1'
+description = 'fba Email 插件的前端实现'
+author = 'wu-clan'
+tags = ['other']
