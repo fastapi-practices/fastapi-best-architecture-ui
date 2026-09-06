@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -19,7 +19,13 @@ const redisUsedMemory = computed(() => [
   },
 ]);
 
+const fetching = ref(false);
+
 const fetchRedisData = async () => {
+  if (fetching.value) {
+    return;
+  }
+  fetching.value = true;
   loading.value = true;
   try {
     const res = await getRedisMonitorApi();
@@ -28,10 +34,39 @@ const fetchRedisData = async () => {
   } catch (error) {
     console.error(error);
   } finally {
+    fetching.value = false;
     loading.value = false;
   }
 };
-fetchRedisData();
+
+const REFRESH_INTERVAL = 5000;
+let refreshTimer: null | ReturnType<typeof setInterval> = null;
+
+function startAutoRefresh() {
+  stopAutoRefresh();
+  refreshTimer = setInterval(() => {
+    if (document.visibilityState === 'hidden') {
+      return;
+    }
+    fetchRedisData();
+  }, REFRESH_INTERVAL);
+}
+
+function stopAutoRefresh() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+}
+
+onMounted(() => {
+  fetchRedisData();
+  startAutoRefresh();
+});
+
+onUnmounted(() => {
+  stopAutoRefresh();
+});
 
 const redisDescriptionItems = computed(() => [
   {
@@ -141,27 +176,23 @@ watch(redisInfo, (val) => {
 </script>
 
 <template>
-  <Page auto-content-height content-class="flex flex-col">
-    <a-card :title="$t('page.monitor.redis.info.title')" :loading="loading">
-      <a-descriptions :items="redisDescriptionItems" />
-    </a-card>
-    <div class="mt-4 flex min-h-0 flex-1 space-x-4">
-      <div class="flex min-h-0 flex-1 flex-col">
+  <Page>
+    <div class="flex flex-col gap-4">
+      <a-card :title="$t('page.monitor.redis.info.title')" :loading="loading">
+        <a-descriptions :items="redisDescriptionItems" />
+      </a-card>
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <a-card
-          class="flex flex-1 flex-col"
           :title="$t('page.monitor.redis.cards.commands.title')"
           :loading="loading"
         >
-          <CommandsSeries class="min-h-0 flex-1" :stats="redisStats" />
+          <CommandsSeries :stats="redisStats" />
         </a-card>
-      </div>
-      <div class="flex min-h-0 flex-1 flex-col">
         <a-card
-          class="flex flex-1 flex-col"
           :title="$t('page.monitor.redis.cards.memory.title')"
           :loading="loading"
         >
-          <ActiveSeries class="min-h-0 flex-1" :memory="redisUsedMemory" />
+          <ActiveSeries :memory="redisUsedMemory" />
         </a-card>
       </div>
     </div>
