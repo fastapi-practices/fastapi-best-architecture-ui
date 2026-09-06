@@ -9,7 +9,7 @@ import { $t } from '@vben/locales';
 import { message } from 'antdv-next';
 
 import { z } from '#/adapter/form';
-import { getPhoneCaptchaApi } from '#/plugins/aliyun_sms/api';
+import { getPhoneCaptchaApi } from '#/plugins/aliyun-sms/api';
 import { getEmailCaptchaApi } from '#/plugins/email/api';
 import { DictEnum, getDictOptions } from '#/utils/dict';
 

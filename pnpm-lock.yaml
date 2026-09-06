@@ -691,9 +691,9 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(vue@3.5.38(typescript@6.0.3))
 
-  apps/web-antdv-next/src/plugins/aliyun_sms: {}
+  apps/web-antdv-next/src/plugins/aliyun-sms: {}
 
-  apps/web-antdv-next/src/plugins/code_generator: {}
+  apps/web-antdv-next/src/plugins/code-generator: {}
 
   apps/web-antdv-next/src/plugins/config: {}
 

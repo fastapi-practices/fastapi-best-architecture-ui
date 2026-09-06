@@ -206,7 +206,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          {{ $t('code_generator.add') }}
+          {{ $t('code-generator.add') }}
         </VbenButton>
         <VbenButton
           class="ml-2"
@@ -214,14 +214,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
           @click="importModalApi.setData(null).open()"
         >
           <MaterialSymbolsAdd class="size-5" />
-          {{ $t('code_generator.import') }}
+          {{ $t('code-generator.import') }}
         </VbenButton>
       </template>
     </Grid>
     <Modal :title="modalTitle">
       <Form />
     </Modal>
-    <ImportModal :title="$t('code_generator.importTable')">
+    <ImportModal :title="$t('code-generator.importTable')">
       <ImportForm />
     </ImportModal>
     <Drawer />

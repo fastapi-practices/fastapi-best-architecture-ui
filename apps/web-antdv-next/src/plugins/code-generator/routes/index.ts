@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
     path: '/plugins/code-generator',
     component: () => import('../views/index.vue'),
     meta: {
-      title: $t('code_generator.menu'),
+      title: $t('code-generator.menu'),
       icon: 'tabler:code',
     },
   },
