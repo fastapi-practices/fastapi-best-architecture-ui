@@ -5,7 +5,6 @@ import { requestClient } from '#/api/request';
 export interface DictTypeParams {
   name?: string;
   code?: string;
-  status?: number;
   page?: number;
   size?: number;
 }
@@ -14,7 +13,6 @@ export interface DictTypeResult {
   id: number;
   name: string;
   code: string;
-  status: number;
   remark?: string;
   created_time: string;
   updated_time?: string;
@@ -23,8 +21,7 @@ export interface DictTypeResult {
 export interface CreateDictTypeParams {
   name: string;
   code: string;
-  status: number;
-  remark: string;
+  remark?: string;
 }
 
 export interface DictDataParams {

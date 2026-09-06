@@ -136,6 +136,11 @@ const [ImportModal, importModalApi] = useVbenModal({
       }
     }
   },
+  onOpenChange(isOpen) {
+    if (isOpen) {
+      importFormApi.resetForm();
+    }
+  },
 });
 
 const [Form, formApi] = useVbenForm({
@@ -201,7 +206,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          添加
+          {{ $t('code_generator.add') }}
         </VbenButton>
         <VbenButton
           class="ml-2"
@@ -209,14 +214,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
           @click="importModalApi.setData(null).open()"
         >
           <MaterialSymbolsAdd class="size-5" />
-          导入
+          {{ $t('code_generator.import') }}
         </VbenButton>
       </template>
     </Grid>
     <Modal :title="modalTitle">
       <Form />
     </Modal>
-    <ImportModal title="导入表">
+    <ImportModal :title="$t('code_generator.importTable')">
       <ImportForm />
     </ImportModal>
     <Drawer />

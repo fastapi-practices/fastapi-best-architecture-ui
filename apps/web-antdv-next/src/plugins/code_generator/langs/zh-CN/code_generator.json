@@ -1,3 +1,15 @@
 {
-  "menu": "代码生成"
+  "menu": "代码生成",
+  "add": "添加",
+  "import": "导入",
+  "importTable": "导入表",
+  "business": "代码生成业务",
+  "column": "模型列",
+  "addColumn": "新增模型列",
+  "preview": "预览",
+  "download": "下载",
+  "generate": "生成",
+  "downloadStarted": "代码包已开始下载",
+  "confirmGenerate": "确认生成",
+  "details": "详情"
 }

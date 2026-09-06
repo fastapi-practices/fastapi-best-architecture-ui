@@ -1,3 +1,17 @@
 {
-  "menu": "Dict"
+  "menu": "Dictionary",
+  "type": "Dict type",
+  "data": "Dict data",
+  "name": "Name",
+  "code": "Code",
+  "status": "Status",
+  "typeName": "Type name",
+  "label": "Label",
+  "value": "Value",
+  "color": "Style",
+  "sort": "Sort",
+  "add": "Add",
+  "codeRule": "Only letters and underscores are allowed",
+  "selectType": "Select a dict type on the left",
+  "emptyData": "No dict data"
 }
