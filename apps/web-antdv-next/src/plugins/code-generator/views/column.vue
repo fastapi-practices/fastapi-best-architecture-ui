@@ -117,7 +117,7 @@ async function downloadCode() {
   try {
     const res = await downloadCodeApi(drawerApi.getData().pk);
     downloadFileFromBlob({ fileName: 'fba_generator', source: res });
-    message.success($t('code_generator.downloadStarted'));
+    message.success($t('code-generator.downloadStarted'));
   } catch (error) {
     console.error(error);
   } finally {
@@ -163,7 +163,7 @@ async function showGenerate() {
       ]),
     ]),
     icon: 'error',
-    confirmText: $t('code_generator.confirmGenerate'),
+    confirmText: $t('code-generator.confirmGenerate'),
   })
     .then(async () => {
       generateLoading.value = true;
@@ -256,18 +256,18 @@ const [PreviewModal, previewModalApi] = useVbenModal({
       </a-alert>
       <VbenButton @click="modalApi.setData(null).open()" class="ml-3">
         <MaterialSymbolsAdd class="size-5" />
-        {{ $t('code_generator.addColumn') }}
+        {{ $t('code-generator.addColumn') }}
       </VbenButton>
     </template>
     <template #center-footer>
       <a-button class="mr-2" @click="openPreview">
-        {{ $t('code_generator.preview') }}
+        {{ $t('code-generator.preview') }}
       </a-button>
       <a-button class="mr-2" :loading="downloadLoading" @click="downloadCode">
-        {{ $t('code_generator.download') }}
+        {{ $t('code-generator.download') }}
       </a-button>
       <a-button :loading="generateLoading" type="primary" @click="showGenerate">
-        {{ $t('code_generator.generate') }}
+        {{ $t('code-generator.generate') }}
       </a-button>
     </template>
   </Drawer>

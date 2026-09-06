@@ -86,7 +86,7 @@ export function useColumns(
       cellRender: {
         attrs: {
           nameField: 'table_name',
-          nameTitle: $t('code_generator.menu'),
+          nameTitle: $t('code-generator.menu'),
           onClick: onActionClick,
         },
         name: 'CellOperation',
