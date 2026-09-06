@@ -156,6 +156,8 @@ const [Modal, modalApi] = useVbenModal({
       if (data) {
         formData.value = data;
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -215,20 +217,20 @@ const [DataScopeRuleGrid, dataScopeRuleGridApi] = useVbenVxeGrid({
 <template>
   <Page auto-content-height>
     <Grid
-      table-title="数据范围"
-      table-title-help="数据范围是一种用于定义数据规则集的机制，可将多个数据规则关联绑定至同一数据范围，从而构建支持多条件组合筛选的数据权限体系"
+      :table-title="$t('system.dataScope.title')"
+      :table-title-help="$t('system.dataScope.help')"
     >
       <template #toolbar-tools>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          新增数据范围
+          {{ $t('system.dataScope.add') }}
         </VbenButton>
       </template>
     </Grid>
     <Modal :title="modalTitle">
       <Form />
     </Modal>
-    <Drawer title="关联数据规则">
+    <Drawer :title="$t('system.dataScope.bindRules')">
       <DataScopeRuleGrid />
     </Drawer>
   </Page>

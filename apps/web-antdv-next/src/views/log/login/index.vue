@@ -81,6 +81,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 });
 
 function onRefresh() {
+  checkedRows.value = [];
   gridApi.query();
 }
 
@@ -91,7 +92,7 @@ const deleteLoading = ref<boolean>(false);
 const deleteLoginLog = async () => {
   confirm({
     icon: 'warning',
-    content: '确定删除已勾选的记录吗？',
+    content: $t('log.deleteConfirm'),
   }).then(async () => {
     deleteLoading.value = true;
     try {
@@ -123,7 +124,7 @@ watch(checkedRows, () => {
           @click="deleteLoginLog"
         >
           <MaterialSymbolsDelete class="size-5" />
-          删除日志
+          {{ $t('log.deleteLogs') }}
         </VbenButton>
       </template>
     </Grid>

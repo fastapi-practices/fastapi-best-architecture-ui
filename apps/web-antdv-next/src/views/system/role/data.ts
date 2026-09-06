@@ -10,7 +10,7 @@ export const querySchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'name',
-    label: '角色名称',
+    label: $t('system.role.name'),
   },
   {
     component: 'Select',
@@ -43,7 +43,7 @@ export function useColumns(
       type: 'seq',
       width: 50,
     },
-    { field: 'name', title: '角色名称' },
+    { field: 'name', title: $t('system.role.name') },
     {
       field: 'is_filter_scopes',
       title: '过滤数据权限',
@@ -109,7 +109,7 @@ export const schema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'name',
-    label: '角色名称',
+    label: $t('system.role.name'),
     rules: 'required',
   },
   {

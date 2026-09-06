@@ -13,7 +13,7 @@ export const querySchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'title',
-    label: '菜单标题',
+    label: $t('system.menu.title'),
   },
   {
     component: 'Select',
@@ -87,7 +87,8 @@ export function useColumns(
       width: 200,
       cellRender: {
         attrs: {
-          nameField: 'name',
+          nameField: 'title',
+          nameTitle: '菜单',
           onClick: onActionClick,
         },
         name: 'CellOperation',
@@ -135,7 +136,7 @@ export const schema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'title',
-    label: '菜单标题',
+    label: $t('system.menu.title'),
     rules: 'required',
   },
   {
@@ -149,7 +150,7 @@ export const schema: VbenFormSchema[] = [
       childrenField: 'children',
     },
     fieldName: 'parent_id',
-    label: '父级部门',
+    label: $t('system.menu.parent'),
   },
   {
     component: 'Input',
@@ -167,7 +168,7 @@ export const schema: VbenFormSchema[] = [
     },
     fieldName: 'path',
     label: '路由地址',
-    rules: z.string().regex(/^\/.*/, { message: '必须以为 "/" 开始' }),
+    rules: z.string().regex(/^\/.*/, { message: $t('system.menu.pathStart') }),
   },
   {
     component: 'InputNumber',

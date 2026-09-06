@@ -60,6 +60,7 @@ const fetchDeptTree = async (name: string | undefined) => {
 };
 
 const searchDeptValue = ref<string>();
+const selectedDeptId = ref<number | string>();
 const searchDept = async (searchValue: string | undefined) => {
   await fetchDeptTree(searchValue);
 };
@@ -149,11 +150,13 @@ async function onActionClick({
 }
 
 const fetchSysUserListByDept = (selectedKeys: (number | string)[]) => {
-  try {
-    gridApi.query({ dept: selectedKeys[0] });
-  } catch (error) {
-    console.error(error);
-  }
+  selectedDeptId.value = selectedKeys[0];
+  gridApi.query({ dept: selectedDeptId.value });
+};
+
+const fetchAllUsers = () => {
+  selectedDeptId.value = undefined;
+  gridApi.query({ dept: undefined });
 };
 
 const roleSelectOptions = ref<SysRoleResult[]>([]);
@@ -196,6 +199,7 @@ const [editModal, editModalApi] = useVbenModal({
       if (data) {
         formApi.setValues({
           ...data,
+          dept_id: data.dept_id ?? data.dept?.id,
           roles: data.roles?.map((item: SysRoleResult) => item.id) || [],
         });
       }
@@ -227,10 +231,9 @@ const [addModal, addModalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = addModalApi.getData();
       addFormApi.resetForm();
-      if (data) {
-        addFormApi.setValues(data);
+      if (selectedDeptId.value) {
+        addFormApi.setValues({ dept_id: selectedDeptId.value });
       }
     }
   },
@@ -297,12 +300,19 @@ onMounted(() => {
         </div>
         <a-spin :spinning="treeLoading">
           <div class="-mt-3 p-3">
-            <div class="mb-1">Xxx集团</div>
+            <div
+              class="mb-1 cursor-pointer rounded px-1 py-0.5 hover:bg-accent"
+              :class="!selectedDeptId && 'font-medium text-primary'"
+              @click="fetchAllUsers"
+            >
+              {{ $t('common.all') }}
+            </div>
             <a-tree
               v-if="treeData.length > 0"
               :show-line="{ showLeafIcon: false }"
               :tree-data="treeData"
               :field-names="{ title: 'name', key: 'id' }"
+              :selected-keys="selectedDeptId ? [selectedDeptId] : []"
               default-expand-all
               @select="fetchSysUserListByDept"
             >
@@ -319,7 +329,7 @@ onMounted(() => {
                 <span v-else>{{ name }}</span>
               </template>
             </a-tree>
-            <a-empty v-else description="暂无部门数据" />
+            <a-empty v-else :description="$t('system.user.emptyDept')" />
           </div>
         </a-spin>
       </div>
@@ -328,7 +338,7 @@ onMounted(() => {
       <template #toolbar-actions>
         <VbenButton @click="() => addModalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          添加用户
+          {{ $t('system.user.add') }}
         </VbenButton>
       </template>
       <template #avatar="{ row }">
@@ -340,7 +350,7 @@ onMounted(() => {
             {{ row.dept.name }}
           </a-tag>
         </span>
-        <span v-else>未绑定</span>
+        <span v-else>{{ $t('common.unbound') }}</span>
       </template>
       <template #roles="{ row }">
         <span v-if="row.roles.length === 1">
@@ -349,30 +359,39 @@ onMounted(() => {
           </a-tag>
         </span>
         <span v-else-if="row.roles.length > 1">
+          <a-tag color="purple">
+            {{ row.roles[0]?.name }}
+          </a-tag>
           <a-popover
             placement="topLeft"
             :styles="{ root: { maxWidth: '20%' } }"
           >
             <template #content>
-              <a-tag v-for="role in row.roles" :key="role.name" color="purple">
-                {{ role.name }}
-              </a-tag>
+              <div class="flex flex-wrap gap-1">
+                <a-tag
+                  v-for="role in row.roles"
+                  :key="role.name"
+                  color="purple"
+                >
+                  {{ role.name }}
+                </a-tag>
+              </div>
             </template>
-            <a-tag v-for="role in row.roles" :key="role.name" color="purple">
-              {{ role.name }}
+            <a-tag class="cursor-pointer" color="purple">
+              +{{ row.roles.length - 1 }}
             </a-tag>
           </a-popover>
         </span>
-        <span v-else>未绑定</span>
+        <span v-else>{{ $t('common.unbound') }}</span>
       </template>
     </Grid>
-    <editModal title="修改用户">
+    <editModal :title="$t('system.user.edit')">
       <EditForm />
     </editModal>
-    <addModal title="添加用户">
+    <addModal :title="$t('system.user.add')">
       <AddForm />
     </addModal>
-    <resetPwdModal title="重置密码">
+    <resetPwdModal :title="$t('system.user.resetPassword')">
       <ResetPwdForm />
     </resetPwdModal>
   </ColPage>

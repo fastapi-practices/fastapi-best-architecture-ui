@@ -151,11 +151,10 @@ const [Modal, modalApi] = useVbenModal({
       const data = modalApi.getData<SysMenuParams>();
       formApi.resetForm();
       if (data) {
-        if (data.parent_id === 0) {
-          data.parent_id = 0;
-        }
         formData.value = data;
         formApi.setValues(formData.value);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -168,14 +167,16 @@ const [Modal, modalApi] = useVbenModal({
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          新增菜单
+          {{ $t('system.menu.add') }}
         </VbenButton>
       </template>
       <template #toolbar-tools>
-        <a-button class="mr-2" type="primary" @click="expandAll">
-          展开全部
-        </a-button>
-        <a-button type="primary" @click="collapseAll">折叠全部</a-button>
+        <VbenButton class="mr-2" variant="outline" @click="expandAll">
+          {{ $t('common.expandAll') }}
+        </VbenButton>
+        <VbenButton variant="outline" @click="collapseAll">
+          {{ $t('common.collapseAll') }}
+        </VbenButton>
       </template>
       <template #title_default="{ row }">
         <div class="flex w-full items-center gap-1">

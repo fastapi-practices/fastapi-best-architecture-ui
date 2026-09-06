@@ -9,7 +9,7 @@ import type { CreateTaskSchedulerParams, TaskSchedulerResult } from '#/api';
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { confirm, Page, useVbenModal, VbenButton } from '@vben/common-ui';
+import { Page, useVbenModal, VbenButton } from '@vben/common-ui';
 import { MaterialSymbolsAdd } from '@vben/icons';
 import { $t } from '@vben/locales';
 
@@ -48,27 +48,22 @@ const formOptions: VbenFormProps = {
   schema: querySchema,
 };
 
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<TaskSchedulerResult>) {
   switch (code) {
     case 'delete': {
-      confirm({
-        icon: 'warning',
-        content: '确认删除此任务计划吗？',
-      }).then(async () => {
-        gridApi.setLoading(true);
-        try {
-          await deleteTaskSchedulerApi(row.id);
-          message.success($t('ui.actionMessage.deleteSuccess'));
-          onRefresh();
-        } catch (error) {
-          console.error(error);
-        } finally {
-          gridApi.setLoading(false);
-        }
-      });
+      gridApi.setLoading(true);
+      try {
+        await deleteTaskSchedulerApi(row.id);
+        message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
+        onRefresh();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        gridApi.setLoading(false);
+      }
       break;
     }
     case 'edit': {
@@ -187,6 +182,9 @@ const [Modal, modalApi] = useVbenModal({
           data.expire_time = dayjs(data.expire_time, 'YYYY-MM-DD HH:mm:ss');
         }
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
+        formApi.setValues({ crontab: '* * * * *' });
       }
     }
   },
@@ -258,7 +256,7 @@ onUnmounted(() => {
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          创建任务
+          {{ $t('scheduler.create') }}
         </VbenButton>
       </template>
       <template #schedule="{ row }">
