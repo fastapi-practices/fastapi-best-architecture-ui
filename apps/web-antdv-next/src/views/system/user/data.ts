@@ -14,12 +14,12 @@ export const querySchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'username',
-    label: '用户名',
+    label: $t('system.user.username'),
   },
   {
     component: 'Input',
     fieldName: 'phone',
-    label: '手机号',
+    label: $t('system.user.phone'),
   },
   {
     component: 'Select',
@@ -68,30 +68,35 @@ export function useColumns(
       fixed: 'left',
       width: 50,
     },
-    { field: 'username', title: '用户名', fixed: 'left', width: 100 },
-    { field: 'nickname', title: '昵称', width: 100 },
+    {
+      field: 'username',
+      title: $t('system.user.username'),
+      fixed: 'left',
+      width: 100,
+    },
+    { field: 'nickname', title: $t('system.user.nickname'), width: 100 },
     {
       field: 'avatar',
-      title: '头像',
+      title: $t('system.user.avatar'),
       width: 80,
       slots: { default: 'avatar' },
     },
     {
       field: 'dept',
-      title: '部门',
+      title: $t('system.user.dept'),
       width: 120,
       slots: { default: 'dept' },
     },
     {
       field: 'roles',
-      title: '角色',
+      title: $t('system.user.roles'),
       width: 200,
       showOverflow: 'ellipsis',
       slots: { default: 'roles' },
     },
     {
       field: 'phone',
-      title: '手机号',
+      title: $t('system.user.phone'),
       width: 150,
       formatter({ cellValue }) {
         return cellValue || '暂无';
@@ -99,7 +104,7 @@ export function useColumns(
     },
     {
       field: 'email',
-      title: '邮箱',
+      title: $t('system.user.email'),
       width: 150,
       formatter({ cellValue }) {
         return cellValue || '暂无';
@@ -113,7 +118,7 @@ export function useColumns(
     },
     {
       field: 'is_superuser',
-      title: '超级管理员',
+      title: $t('system.user.superuser'),
       width: 100,
       cellRender: createPermissionSwitch('superuser', {
         checkedValue: true,
@@ -122,7 +127,7 @@ export function useColumns(
     },
     {
       field: 'is_staff',
-      title: '后台登录',
+      title: $t('system.user.staff'),
       width: 100,
       cellRender: createPermissionSwitch('staff', {
         checkedValue: true,
@@ -131,7 +136,7 @@ export function useColumns(
     },
     {
       field: 'is_multi_login',
-      title: '多端登录',
+      title: $t('system.user.multiLogin'),
       width: 100,
       cellRender: createPermissionSwitch('multi_login', {
         checkedValue: true,
@@ -140,12 +145,12 @@ export function useColumns(
     },
     {
       field: 'join_time',
-      title: '注册时间',
+      title: $t('system.user.joinTime'),
       width: 168,
     },
     {
       field: 'last_login_time',
-      title: '最后登录时间',
+      title: $t('system.user.lastLoginTime'),
       width: 168,
     },
     {

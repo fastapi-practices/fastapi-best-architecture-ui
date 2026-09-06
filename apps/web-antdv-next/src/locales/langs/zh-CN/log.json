@@ -1,0 +1,32 @@
+{
+  "username": "用户名",
+  "ip": "IP 地址",
+  "status": "状态",
+  "country": "国家",
+  "region": "地区",
+  "city": "城市",
+  "os": "操作系统",
+  "browser": "浏览器",
+  "device": "设备",
+  "msg": "消息",
+  "loginTime": "登录时间",
+  "deleteLogs": "删除日志",
+  "deleteConfirm": "确定删除已勾选的记录吗？",
+  "opera": {
+    "method": "请求方法",
+    "title": "操作标题",
+    "path": "请求路径",
+    "costTime": "耗时（ms）",
+    "operaTime": "操作时间",
+    "details": "详情",
+    "detailTitle": "操作日志详情",
+    "traceId": "追踪 ID",
+    "code": "状态码",
+    "userAgent": "用户代理",
+    "args": "请求参数",
+    "responseMsg": "响应消息",
+    "copiedArgs": "已复制请求参数",
+    "success": "成功",
+    "failed": "失败"
+  }
+}

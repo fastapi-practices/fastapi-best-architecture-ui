@@ -9,12 +9,12 @@ export const querySchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'username',
-    label: '用户名',
+    label: $t('log.username'),
   },
   {
     component: 'Input',
     fieldName: 'ip',
-    label: 'IP 地址',
+    label: $t('log.ip'),
   },
   {
     component: 'Select',
@@ -45,10 +45,10 @@ export const columns: VxeGridProps['columns'] = [
     type: 'seq',
     width: 50,
   },
-  { field: 'username', title: '用户名' },
+  { field: 'username', title: $t('log.username') },
   {
     field: 'status',
-    title: '状态',
+    title: $t('log.status'),
     cellRender: {
       name: 'CellTag',
       // options: [
@@ -58,14 +58,14 @@ export const columns: VxeGridProps['columns'] = [
       options: getDictOptions(DictEnum.SYS_LOGIN_STATUS),
     },
   },
-  { field: 'ip', title: 'IP 地址' },
-  { field: 'country', title: '国家' },
-  { field: 'region', title: '地区' },
-  { field: 'os', title: '操作系统' },
-  { field: 'browser', title: '浏览器' },
-  { field: 'device', title: '设备' },
-  { field: 'msg', title: '消息', width: 150 },
-  { field: 'login_time', title: '登录时间', width: 168 },
+  { field: 'ip', title: $t('log.ip') },
+  { field: 'country', title: $t('log.country') },
+  { field: 'region', title: $t('log.region') },
+  { field: 'os', title: $t('log.os') },
+  { field: 'browser', title: $t('log.browser') },
+  { field: 'device', title: $t('log.device') },
+  { field: 'msg', title: $t('log.msg'), width: 150 },
+  { field: 'login_time', title: $t('log.loginTime'), width: 168 },
   {
     field: 'created_time',
     title: $t('common.table.created_time'),

@@ -116,7 +116,7 @@ const modalTitle = computed(() => {
 });
 
 const [Modal, modalApi] = useVbenModal({
-  destroyOnClose: false,
+  destroyOnClose: true,
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (valid) {
@@ -141,6 +141,8 @@ const [Modal, modalApi] = useVbenModal({
       if (data) {
         formData.value = data;
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -192,7 +194,7 @@ const openAddModal = (row: any, isAdd: boolean) => {
       <template #toolbar-actions>
         <VbenButton @click="openAddModal(null, true)">
           <MaterialSymbolsAdd class="size-5" />
-          新增数据规则
+          {{ $t('system.dataRule.add') }}
         </VbenButton>
       </template>
     </Grid>

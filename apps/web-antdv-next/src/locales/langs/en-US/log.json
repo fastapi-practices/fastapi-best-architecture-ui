@@ -1,0 +1,32 @@
+{
+  "username": "Username",
+  "ip": "IP address",
+  "status": "Status",
+  "country": "Country",
+  "region": "Region",
+  "city": "City",
+  "os": "OS",
+  "browser": "Browser",
+  "device": "Device",
+  "msg": "Message",
+  "loginTime": "Login time",
+  "deleteLogs": "Delete logs",
+  "deleteConfirm": "Delete the selected records?",
+  "opera": {
+    "method": "Method",
+    "title": "Title",
+    "path": "Path",
+    "costTime": "Duration (ms)",
+    "operaTime": "Time",
+    "details": "Details",
+    "detailTitle": "Operation log details",
+    "traceId": "Trace ID",
+    "code": "Status code",
+    "userAgent": "User agent",
+    "args": "Request args",
+    "responseMsg": "Response message",
+    "copiedArgs": "Request args copied",
+    "success": "Success",
+    "failed": "Failed"
+  }
+}

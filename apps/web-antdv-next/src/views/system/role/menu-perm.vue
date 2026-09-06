@@ -5,7 +5,7 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import type { OnActionClickParams } from '#/adapter/vxe-table';
 import type { SysDataScopeResult, SysMenuTreeResult } from '#/api';
 
-import { nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -29,10 +29,10 @@ import {
 import ExtraDataRuleDrawer from './data-perm.vue';
 
 const activeKey = ref('0');
-const tabItems = [
-  { key: '0', label: '菜单权限' },
-  { key: '1', label: '数据权限' },
-];
+const tabItems = computed(() => [
+  { key: '0', label: $t('system.role.menuPerm') },
+  { key: '1', label: $t('system.role.dataPerm') },
+]);
 const clickRow = ref<number>(0);
 const defaultCheckedRoleMenuKeys = ref<number[]>([]);
 const checkStrictly = ref<boolean>(true);
@@ -67,10 +67,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
     }
   },
   onOpenChange(isOpen: boolean) {
-    clickRow.value = drawerApi.getData().pk;
-    if (isOpen && activeKey.value === '0') {
-      defaultCheckedRoleMenuKeys.value = drawerApi.getData().checkedRoleMenu;
+    if (!isOpen) {
+      return;
     }
+    clickRow.value = drawerApi.getData().pk;
+    activeKey.value = '0';
+    defaultCheckedRoleMenuKeys.value = drawerApi.getData().checkedRoleMenu;
   },
 });
 
@@ -232,15 +234,21 @@ const [DataRuleDrawer, dataRuleDrawerApi] = useVbenDrawer({
                 class="h-8"
                 button-style="solid"
               >
-                <a-radio-button :value="true">父子独立</a-radio-button>
-                <a-radio-button :value="false">父子联动</a-radio-button>
+                <a-radio-button :value="true">
+                  {{ $t('system.role.independent') }}
+                </a-radio-button>
+                <a-radio-button :value="false">
+                  {{ $t('system.role.linked') }}
+                </a-radio-button>
               </a-radio-group>
             </template>
             <template #toolbar-tools>
               <a-button class="mr-2" type="primary" @click="expandAll">
-                展开全部
+                {{ $t('common.expandAll') }}
               </a-button>
-              <a-button type="primary" @click="collapseAll">折叠全部</a-button>
+              <a-button type="primary" @click="collapseAll">
+                {{ $t('common.collapseAll') }}
+              </a-button>
             </template>
           </Grid>
         </template>

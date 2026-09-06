@@ -88,6 +88,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 });
 
 function onRefresh() {
+  checkedRows.value = [];
   gridApi.query();
 }
 
@@ -148,7 +149,7 @@ const deleteLoading = ref<boolean>(false);
 const deleteLoginLog = async () => {
   confirm({
     icon: 'warning',
-    content: '确定删除已勾选的记录吗？',
+    content: $t('log.deleteConfirm'),
   }).then(async () => {
     deleteLoading.value = true;
     try {
@@ -180,11 +181,11 @@ watch(checkedRows, () => {
           @click="deleteLoginLog"
         >
           <MaterialSymbolsDelete class="size-5" />
-          删除日志
+          {{ $t('log.deleteLogs') }}
         </VbenButton>
       </template>
     </Grid>
-    <Drawer title="操作日志详情">
+    <Drawer :title="$t('log.opera.detailTitle')">
       <a-descriptions
         :styles="{ label: { color: '#6b7280' } }"
         class="ml-1"
@@ -194,9 +195,9 @@ watch(checkedRows, () => {
         <template #contentRender="{ item }">
           <template v-if="item.key === 'status'">
             <a-tag v-if="operaLogDetails?.status === 1" color="success">
-              成功
+              {{ $t('log.opera.success') }}
             </a-tag>
-            <a-tag v-else color="error"> 失败 </a-tag>
+            <a-tag v-else color="error">{{ $t('log.opera.failed') }}</a-tag>
           </template>
           <template v-else-if="item.key === 'cost_time'">
             <a-tag
