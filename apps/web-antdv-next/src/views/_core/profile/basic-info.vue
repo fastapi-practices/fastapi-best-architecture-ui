@@ -1,59 +1,79 @@
 <script setup lang="ts">
-import type {
-  SysUpdateUserAvatarParams,
-  SysUpdateUserNicknameParams,
-} from '#/api';
+import type { SysUpdateUserNicknameParams } from '#/api';
 
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
 import { preferences } from '@vben/preferences';
 import { useUserStore } from '@vben/stores';
 
 import { message } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
-import { updateSysUserAvatarApi, updateSysUserNicknameApi } from '#/api';
+import {
+  updateSysUserAvatarApi,
+  updateSysUserNicknameApi,
+  upload_file,
+} from '#/api';
 import { useAuthStore } from '#/store';
 
-import { avatarSchema, nicknameSchema } from './data';
+import { nicknameSchema } from './data';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+const avatarInputRef = ref<HTMLInputElement>();
+const avatarUploading = ref(false);
 
-const [AvatarForm, avatarFormApi] = useVbenForm({
-  layout: 'vertical',
-  showDefaultActions: false,
-  schema: avatarSchema,
-});
+function triggerAvatarSelect() {
+  if (avatarUploading.value) {
+    return;
+  }
+  avatarInputRef.value?.click();
+}
 
-const [avatarModal, avatarModalApi] = useVbenModal({
-  destroyOnClose: true,
-  async onConfirm() {
-    const { valid } = await avatarFormApi.validate();
-    if (valid) {
-      avatarModalApi.lock();
-      const data = await avatarFormApi.getValues<SysUpdateUserAvatarParams>();
-      try {
-        await updateSysUserAvatarApi(data);
-        message.success('头像更新成功');
-        await avatarModalApi.close();
+function resolveUploadUrl(data: any): string {
+  return data?.url ?? data?.data?.url ?? data?.file_url ?? '';
+}
+
+async function onAvatarFileChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  input.value = '';
+  if (!file) {
+    return;
+  }
+  if (!file.type.startsWith('image/')) {
+    message.warning($t('page.profile.avatarTypeInvalid'));
+    return;
+  }
+  if (file.size / 1024 / 1024 > 2) {
+    message.warning($t('ui.formRules.sizeLimit', [2]));
+    return;
+  }
+
+  avatarUploading.value = true;
+  try {
+    await upload_file({
+      file,
+      onSuccess: async (data) => {
+        const url = resolveUploadUrl(data);
+        if (!url) {
+          message.error($t('page.profile.avatarUploadFailed'));
+          return;
+        }
+        await updateSysUserAvatarApi({ avatar: url });
+        message.success($t('page.profile.avatarUpdated'));
         await authStore.fetchUserInfo();
-      } finally {
-        avatarModalApi.unlock();
-      }
-    }
-  },
-  onOpenChange(isOpen) {
-    if (isOpen) {
-      const data = avatarModalApi.getData();
-      avatarFormApi.resetForm();
-      if (data) {
-        avatarFormApi.setValues(data);
-      }
-    }
-  },
-});
+      },
+      onError: (error) => {
+        message.error(error.message || $t('page.profile.avatarUploadFailed'));
+      },
+    });
+  } finally {
+    avatarUploading.value = false;
+  }
+}
 
 const [NicknameForm, nicknameFormApi] = useVbenForm({
   layout: 'vertical',
@@ -71,7 +91,7 @@ const [nicknameModal, nicknameModalApi] = useVbenModal({
         await nicknameFormApi.getValues<SysUpdateUserNicknameParams>();
       try {
         await updateSysUserNicknameApi(data);
-        message.success('昵称更新成功');
+        message.success($t('page.profile.nicknameUpdated'));
         await nicknameModalApi.close();
         await authStore.fetchUserInfo();
       } finally {
@@ -81,52 +101,65 @@ const [nicknameModal, nicknameModalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = nicknameModalApi.getData();
       nicknameFormApi.resetForm();
-      if (data) {
-        nicknameFormApi.setValues(data);
-      }
+      nicknameFormApi.setValues({
+        nickname: userStore.userInfo?.nickname,
+      });
     }
   },
 });
 
+function emptyText(value?: null | string) {
+  return value || $t('common.none');
+}
+
 const basicInfoItems = computed(() => [
   {
     key: 'username',
-    label: '用户名',
+    label: $t('page.profile.username'),
     content: userStore.userInfo?.username,
   },
   {
     key: 'phone',
-    label: '手机',
-    content: userStore.userInfo?.phone || '暂无',
+    label: $t('page.profile.phone'),
+    content: emptyText(userStore.userInfo?.phone),
   },
   {
     key: 'email',
-    label: '邮箱',
-    content: userStore.userInfo?.email,
+    label: $t('page.profile.email'),
+    content: emptyText(userStore.userInfo?.email),
   },
   {
     key: 'dept',
-    label: '部门',
+    label: $t('page.profile.dept'),
   },
   {
     key: 'roles',
-    label: '角色',
+    label: $t('page.profile.roles'),
   },
 ]);
 </script>
 
 <template>
-  <a-card title="基本信息" :styles="{ header: { borderBottom: 'none' } }">
+  <a-card
+    :title="$t('page.profile.basicInfo')"
+    :styles="{ header: { borderBottom: 'none' } }"
+  >
     <div class="mb-8 mt-2 text-center">
+      <input
+        ref="avatarInputRef"
+        type="file"
+        accept="image/*"
+        class="hidden"
+        @change="onAvatarFileChange"
+      />
       <a-tooltip>
-        <template #title>点击上传头像</template>
+        <template #title>{{ $t('page.profile.clickUploadAvatar') }}</template>
         <a-avatar
           class="cursor-pointer"
           :size="128"
           :src="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
-          @click="avatarModalApi.setData(null).open()"
+          @click="triggerAvatarSelect"
         />
       </a-tooltip>
       <p class="mt-5 text-lg">
@@ -134,18 +167,12 @@ const basicInfoItems = computed(() => [
         <a-button
           ghost
           size="small"
-          @click="nicknameModalApi.setData(null).open()"
+          :aria-label="$t('page.profile.editNickname')"
+          @click="nicknameModalApi.open()"
         >
           <span class="icon-[cuida--edit-outline]"></span>
         </a-button>
       </p>
-      <div class="mt-3 flex items-center justify-center gap-2">
-        <span
-          class="icon-[ix--id-filled]"
-          style="width: 1.2em; height: 1.2em"
-        ></span>
-        <p class="text-sm text-gray-500">{{ userStore.userInfo?.id }}</p>
-      </div>
     </div>
     <a-descriptions class="ml-6" :column="1" :items="basicInfoItems">
       <template #contentRender="{ item }">
@@ -155,7 +182,7 @@ const basicInfoItems = computed(() => [
               {{ userStore.userInfo?.dept }}
             </a-tag>
           </span>
-          <span v-else>未绑定</span>
+          <span v-else>{{ $t('common.unbound') }}</span>
         </template>
         <template v-else-if="item.key === 'roles'">
           <div class="flex flex-wrap gap-2">
@@ -172,13 +199,12 @@ const basicInfoItems = computed(() => [
       </template>
     </a-descriptions>
     <template #actions>
-      最后登录时间：{{ userStore.userInfo?.last_login_time }}
+      {{ $t('page.profile.lastLoginTime') }}：{{
+        userStore.userInfo?.last_login_time || '-'
+      }}
     </template>
   </a-card>
-  <avatarModal title="更新头像">
-    <AvatarForm />
-  </avatarModal>
-  <nicknameModal title="更新昵称">
+  <nicknameModal :title="$t('page.profile.updateNickname')">
     <NicknameForm />
   </nicknameModal>
 </template>

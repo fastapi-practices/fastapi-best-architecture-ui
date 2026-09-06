@@ -10,5 +10,13 @@
     "mark": "备注",
     "operation": "操作",
     "updated_time": "更新时间"
-  }
+  },
+  "save": "保存",
+  "bind": "绑定",
+  "unbind": "解绑",
+  "all": "全部",
+  "none": "暂无",
+  "unbound": "未绑定",
+  "expandAll": "展开全部",
+  "collapseAll": "折叠全部"
 }

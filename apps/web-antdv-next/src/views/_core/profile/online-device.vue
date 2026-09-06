@@ -75,7 +75,9 @@ function onActionClick({
 <template>
   <Grid>
     <template #toolbar-actions>
-      <div class="mr-1 pl-1 text-[1rem]">我的已登录设备</div>
+      <div class="mr-1 pl-1 text-[1rem]">
+        {{ $t('page.profile.myDevices') }}
+      </div>
     </template>
   </Grid>
 </template>

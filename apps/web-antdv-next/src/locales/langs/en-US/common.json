@@ -10,5 +10,13 @@
     "mark": "Mark",
     "operation": "Operation",
     "updated_time": "Updated time"
-  }
+  },
+  "save": "Save",
+  "bind": "Bind",
+  "unbind": "Unbind",
+  "all": "All",
+  "none": "None",
+  "unbound": "Unbound",
+  "expandAll": "Expand all",
+  "collapseAll": "Collapse all"
 }

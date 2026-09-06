@@ -13,20 +13,11 @@ import { getPhoneCaptchaApi } from '#/plugins/aliyun_sms/api';
 import { getEmailCaptchaApi } from '#/plugins/email/api';
 import { DictEnum, getDictOptions } from '#/utils/dict';
 
-export const avatarSchema: VbenFormSchema[] = [
-  {
-    component: 'Textarea',
-    fieldName: 'avatar',
-    label: '头像链接',
-    rules: 'required',
-  },
-];
-
 export const nicknameSchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'nickname',
-    label: '昵称',
+    label: $t('page.profile.nickname'),
     rules: 'required',
   },
 ];
@@ -37,7 +28,7 @@ export const phoneSchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'phone',
-    label: '手机号',
+    label: $t('page.profile.phone'),
     rules: z
       .string()
       .min(1, { message: $t('authentication.mobileTip') })
@@ -55,12 +46,12 @@ export const phoneSchema: VbenFormSchema[] = [
           : $t('authentication.sendCode');
       },
       handleSendCode: async () => {
-        try {
-          await getPhoneCaptchaApi({ phone: phoneValue.value });
-          message.success('短信验证码已发送，请注意查收');
-        } catch (error) {
-          console.error(error);
+        if (!/^\d{11}$/.test(phoneValue.value)) {
+          message.warning($t('authentication.mobileErrortip'));
+          throw new Error('invalid phone');
         }
+        await getPhoneCaptchaApi({ phone: phoneValue.value });
+        message.success($t('page.profile.smsSent'));
       },
       placeholder: $t('authentication.code'),
     },
@@ -71,7 +62,7 @@ export const phoneSchema: VbenFormSchema[] = [
       triggerFields: ['phone'],
     },
     fieldName: 'captcha',
-    label: '验证码',
+    label: $t('page.profile.captcha'),
     rules: z.string().length(CODE_LENGTH, {
       message: $t('authentication.codeTip', [CODE_LENGTH]),
     }),
@@ -83,7 +74,7 @@ export const emailSchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'email',
-    label: '邮箱',
+    label: $t('page.profile.email'),
     rules: z.string().email({ message: '无效的邮箱地址' }),
   },
   {
@@ -96,12 +87,12 @@ export const emailSchema: VbenFormSchema[] = [
           : $t('authentication.sendCode');
       },
       handleSendCode: async () => {
-        try {
-          await getEmailCaptchaApi({ recipients: emailValue.value });
-          message.success('邮箱验证码已发送，请注意查收');
-        } catch (error) {
-          console.error(error);
+        if (!emailValue.value || !emailValue.value.includes('@')) {
+          message.warning($t('page.profile.invalidEmail'));
+          throw new Error('invalid email');
         }
+        await getEmailCaptchaApi({ recipients: emailValue.value });
+        message.success($t('page.profile.emailSent'));
       },
       placeholder: $t('authentication.code'),
     },
@@ -112,7 +103,7 @@ export const emailSchema: VbenFormSchema[] = [
       triggerFields: ['email'],
     },
     fieldName: 'captcha',
-    label: '验证码',
+    label: $t('page.profile.captcha'),
     rules: z.string().length(CODE_LENGTH, {
       message: $t('authentication.codeTip', [CODE_LENGTH]),
     }),
@@ -123,7 +114,7 @@ export const passwordSchema: VbenFormSchema[] = [
   {
     component: 'InputPassword',
     fieldName: 'old_password',
-    label: '当前密码',
+    label: $t('page.profile.currentPassword'),
     rules: z
       .string({ message: '请输入当前密码' })
       .min(6, '密码长度不能少于 6 个字符')
@@ -132,7 +123,7 @@ export const passwordSchema: VbenFormSchema[] = [
   {
     component: 'InputPassword',
     fieldName: 'new_password',
-    label: '新密码',
+    label: $t('page.profile.newPassword'),
     rules: z
       .string({ message: '请输入新密码' })
       .min(6, '密码长度不能少于 6 个字符')
@@ -141,7 +132,7 @@ export const passwordSchema: VbenFormSchema[] = [
   {
     component: 'InputPassword',
     fieldName: 'confirm_password',
-    label: '确认密码',
+    label: $t('page.profile.confirmPassword'),
     dependencies: {
       rules(values) {
         return z
@@ -150,7 +141,7 @@ export const passwordSchema: VbenFormSchema[] = [
           .max(20, '密码长度不能超过 20 个字符')
           .refine(
             (value) => value === values.new_password,
-            '两次密码输出不一致',
+            $t('page.profile.passwordMismatch'),
           );
       },
       triggerFields: ['new_password', 'confirm_password'],
@@ -162,10 +153,10 @@ export function useColumns(
   onActionClick?: OnActionClickFn<OnlineMonitorResult>,
 ): VxeGridProps['columns'] {
   return [
-    { field: 'ip', title: 'IP 地址' },
-    { field: 'os', title: '操作系统' },
-    { field: 'browser', title: '浏览器' },
-    { field: 'device', title: '设备' },
+    { field: 'ip', title: $t('page.monitor.online.ip') },
+    { field: 'os', title: $t('page.monitor.online.os') },
+    { field: 'browser', title: $t('page.monitor.online.browser') },
+    { field: 'device', title: $t('page.monitor.online.device') },
     {
       field: 'status',
       title: '状态',
@@ -178,8 +169,11 @@ export function useColumns(
         options: getDictOptions(DictEnum.USER_ONLINE_STATUS),
       },
     },
-    { field: 'last_login_time', title: '最后登录时间' },
-    { field: 'expire_time', title: '过期时间' },
+    {
+      field: 'last_login_time',
+      title: $t('page.monitor.online.lastLoginTime'),
+    },
+    { field: 'expire_time', title: $t('page.monitor.online.expireTime') },
     {
       field: 'operation',
       title: $t('common.table.operation'),
@@ -195,7 +189,12 @@ export function useColumns(
         options: [
           {
             code: 'delete',
-            text: '强制下线',
+            text: $t('page.monitor.online.kickOut'),
+            confirmTitle: $t('page.monitor.online.kickOut'),
+            confirmMessage: (row: OnlineMonitorResult) =>
+              $t('page.monitor.online.kickOutConfirm', [
+                row.ip || row.device || row.nickname,
+              ]),
           },
         ],
       },
