@@ -19,6 +19,8 @@ const { renderEcharts } = useEcharts(chartRef);
 
 const renderChart = () => {
   renderEcharts({
+    animationDuration: 600,
+    animationDurationUpdate: 600,
     progress: {
       show: true,
     },

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -77,7 +77,13 @@ const usageStyle = (type: string) => {
   return { color: '#DC143C' };
 };
 
+const fetching = ref(false);
+
 const fetchServerData = async () => {
+  if (fetching.value) {
+    return;
+  }
+  fetching.value = true;
   loading.value = true;
   try {
     const res = await getServerMonitorApi();
@@ -89,6 +95,7 @@ const fetchServerData = async () => {
   } catch (error) {
     console.error(error);
   } finally {
+    fetching.value = false;
     loading.value = false;
   }
 };
@@ -111,14 +118,43 @@ const [Grid, gridApi] = useVbenVxeGrid({
   },
 });
 
-onMounted(async () => {
+const refreshServerData = async () => {
   await fetchServerData();
   gridApi.setGridOptions({ data: diskData.value });
+};
+
+const REFRESH_INTERVAL = 5000;
+let refreshTimer: null | ReturnType<typeof setInterval> = null;
+
+function startAutoRefresh() {
+  stopAutoRefresh();
+  refreshTimer = setInterval(() => {
+    if (document.visibilityState === 'hidden') {
+      return;
+    }
+    refreshServerData();
+  }, REFRESH_INTERVAL);
+}
+
+function stopAutoRefresh() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+}
+
+onMounted(() => {
+  refreshServerData();
+  startAutoRefresh();
+});
+
+onUnmounted(() => {
+  stopAutoRefresh();
 });
 </script>
 
 <template>
-  <Page auto-content-height>
+  <Page>
     <div class="grid gap-6 xl:grid-cols-2">
       <div class="min-w-0">
         <a-card :loading="loading" :title="$t('page.monitor.server.cpu.title')">
