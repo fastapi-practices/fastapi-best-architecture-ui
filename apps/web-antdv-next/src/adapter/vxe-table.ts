@@ -213,10 +213,12 @@ setupVbenVxeTable({
                 );
               },
               placement: 'topLeft',
-              title: $t('ui.actionTitle.delete', [attrs?.nameTitle || '']),
               ...props,
               ...opt,
               icon: undefined,
+              title:
+                opt.confirmTitle ||
+                $t('ui.actionTitle.delete', [attrs?.nameTitle || '']),
               onConfirm: () => {
                 attrs?.onClick?.({
                   code: opt.code,
@@ -230,9 +232,10 @@ setupVbenVxeTable({
                 h(
                   'div',
                   { class: 'truncate' },
-                  $t('ui.actionMessage.deleteConfirm', [
-                    row[attrs?.nameField || 'name'],
-                  ]),
+                  opt.confirmMessage ||
+                    $t('ui.actionMessage.deleteConfirm', [
+                      row[attrs?.nameField || 'name'],
+                    ]),
                 ),
             },
           );

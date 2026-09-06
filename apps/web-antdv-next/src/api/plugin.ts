@@ -1,7 +1,18 @@
 import { requestClient } from '#/api/request';
 
+export interface PluginInfo {
+  author: string;
+  description: string;
+  enable: '0' | '1' | boolean;
+  icon?: string;
+  name: string;
+  summary: string;
+  tags?: string[];
+  version: string;
+}
+
 export interface PluginResult {
-  [key: string]: any;
+  plugin: PluginInfo;
 }
 
 export async function getPluginListApi() {
