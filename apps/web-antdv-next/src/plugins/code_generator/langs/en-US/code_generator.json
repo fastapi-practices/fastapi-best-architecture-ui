@@ -1,3 +1,15 @@
 {
-  "menu": "Code Generator"
+  "menu": "Code Generator",
+  "add": "Add",
+  "import": "Import",
+  "importTable": "Import table",
+  "business": "Business",
+  "column": "Column",
+  "addColumn": "Add column",
+  "preview": "Preview",
+  "download": "Download",
+  "generate": "Generate",
+  "downloadStarted": "Code package download started",
+  "confirmGenerate": "Generate",
+  "details": "Details"
 }

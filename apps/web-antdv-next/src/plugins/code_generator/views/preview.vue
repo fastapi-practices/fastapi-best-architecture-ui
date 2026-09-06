@@ -181,6 +181,7 @@ function copyCodeContent(code: string) {
           class="h-full overflow-y-scroll text-[13px]"
           v-model="codeContent"
           :language="language"
+          :readonly="true"
         />
         <div class="fixed right-12 top-20">
           <a-button @click="copyCodeContent(codeContent)">复制</a-button>

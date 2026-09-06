@@ -107,6 +107,10 @@ function onActionClick({ code, row }: OnActionClickParams<DictTypeResult>) {
           content: $t('ui.actionMessage.deleteSuccess', [row.name]),
           key: 'action_process_msg',
         });
+        if (lastDictTypeId.value === row.id) {
+          lastDictTypeId.value = 0;
+          emitter.emit('rowClick', 0);
+        }
         onRefresh();
       });
       break;
@@ -166,6 +170,8 @@ const [Modal, modalApi] = useVbenModal({
       if (data) {
         formData.value = data;
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -173,11 +179,11 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 
 <template>
-  <Grid table-title="字典类型">
+  <Grid :table-title="$t('dict.type')">
     <template #toolbar-tools>
       <VbenButton @click="() => modalApi.setData(null).open()">
         <MaterialSymbolsAdd class="size-5" />
-        新增
+        {{ $t('dict.add') }}
       </VbenButton>
     </template>
   </Grid>

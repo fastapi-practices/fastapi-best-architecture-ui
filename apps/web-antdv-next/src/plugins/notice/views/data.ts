@@ -14,7 +14,7 @@ export const querySchema: VbenFormSchema[] = [
   {
     component: 'Input',
     fieldName: 'title',
-    label: '标题',
+    label: $t('notice.title'),
   },
   {
     component: 'Select',
@@ -33,7 +33,7 @@ export const querySchema: VbenFormSchema[] = [
       options: getDictOptions(DictEnum.NOTICE),
     },
     fieldName: 'type',
-    label: '类型',
+    label: $t('notice.type'),
   },
   {
     component: 'Select',
@@ -100,13 +100,15 @@ export function useColumns(
       width: 150,
       cellRender: {
         attrs: {
+          nameField: 'title',
+          nameTitle: $t('notice.menu'),
           onClick: onActionClick,
         },
         name: 'CellOperation',
         options: [
           {
             code: 'preview',
-            text: '预览',
+            text: $t('notice.preview'),
           },
           'edit',
           'delete',
@@ -121,7 +123,7 @@ export const schema: VbenFormSchema[] = [
     component: 'Input',
     formItemClass: 'md:col-span-2',
     fieldName: 'title',
-    label: '标题',
+    label: $t('notice.title'),
     rules: 'required',
   },
   {
@@ -139,7 +141,7 @@ export const schema: VbenFormSchema[] = [
     },
     defaultValue: 0,
     fieldName: 'type',
-    label: '类型',
+    label: $t('notice.type'),
     rules: 'required',
   },
   {

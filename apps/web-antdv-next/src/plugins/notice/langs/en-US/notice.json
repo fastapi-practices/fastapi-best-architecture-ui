@@ -1,3 +1,10 @@
 {
-  "menu": "Notice"
+  "menu": "Notice",
+  "title": "Title",
+  "type": "Type",
+  "status": "Status",
+  "content": "Content",
+  "preview": "Preview",
+  "add": "Add notice",
+  "previewTitle": "Notice preview"
 }

@@ -103,7 +103,7 @@ defineExpose({
         "
       >
         <MaterialSymbolsEdit class="mr-1" />
-        修改
+        {{ $t('common.edit') }}
       </VbenButton>
       <VbenButton
         v-show="!editButtonShow"
@@ -112,7 +112,7 @@ defineExpose({
         @click="saveLoginConfig"
       >
         <MaterialSymbolsEdit class="mr-1" />
-        保存
+        {{ $t('common.save') }}
       </VbenButton>
       <VbenButton
         v-show="!editButtonShow"
@@ -127,8 +127,7 @@ defineExpose({
           }
         "
       >
-        <MaterialSymbolsEdit class="mr-1" />
-        取消
+        {{ $t('common.cancel') }}
       </VbenButton>
     </div>
   </a-spin>

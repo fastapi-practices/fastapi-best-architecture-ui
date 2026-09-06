@@ -123,8 +123,8 @@ const formData = ref<formSysNoticeParams>();
 
 const modalTitle = computed(() => {
   return formData.value?.id
-    ? $t('ui.actionTitle.edit', ['角色'])
-    : $t('ui.actionTitle.create', ['角色']);
+    ? $t('ui.actionTitle.edit', [$t('notice.menu')])
+    : $t('ui.actionTitle.create', [$t('notice.menu')]);
 });
 
 const [Modal, modalApi] = useVbenModal({
@@ -154,6 +154,8 @@ const [Modal, modalApi] = useVbenModal({
       if (data) {
         formData.value = data;
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
       }
     }
   },
@@ -163,7 +165,7 @@ const preViewTitle = ref<string>('');
 const preViewContent = ref<string>('');
 
 const [PreviewModal, previewModalApi] = useVbenModal({
-  title: '通知公告预览',
+  title: $t('notice.previewTitle'),
   class: 'w-5/12',
   footer: false,
   onOpenChange: (isOpen) => {
@@ -184,7 +186,7 @@ const [PreviewModal, previewModalApi] = useVbenModal({
       <template #toolbar-actions>
         <VbenButton @click="() => modalApi.setData(null).open()">
           <MaterialSymbolsAdd class="size-5" />
-          新增通知公告
+          {{ $t('notice.add') }}
         </VbenButton>
       </template>
     </Grid>

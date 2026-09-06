@@ -3,8 +3,6 @@ import type { CodeGenBusinessResult, CodeGenColumnResult } from '../api';
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeGridProps } from '#/adapter/vxe-table';
 
-import { ref } from 'vue';
-
 import { $t } from '@vben/locales';
 
 import { DictEnum, getDictOptions } from '#/utils/dict';
@@ -87,6 +85,8 @@ export function useColumns(
       width: 150,
       cellRender: {
         attrs: {
+          nameField: 'table_name',
+          nameTitle: $t('code_generator.menu'),
           onClick: onActionClick,
         },
         name: 'CellOperation',
@@ -103,7 +103,6 @@ export function useColumns(
   ];
 }
 
-const tableSchemaValue = ref<string>();
 export const importSchema: VbenFormSchema[] = [
   {
     component: 'Input',
@@ -124,7 +123,6 @@ export const importSchema: VbenFormSchema[] = [
     componentProps: {
       allowClear: true,
       api: getCodeGenDbTableApi,
-      params: { table_schema: tableSchemaValue },
       afterFetch: (data: { table_comment: string; table_name: string }[]) => {
         return data.map((item: any) => ({
           label: item.table_comment || item.table_name,
@@ -134,11 +132,11 @@ export const importSchema: VbenFormSchema[] = [
       class: 'w-full',
     },
     dependencies: {
+      componentProps: (values) => ({
+        params: { table_schema: values.table_schema },
+      }),
       disabled: (values) => {
         return !values.table_schema;
-      },
-      trigger(values) {
-        tableSchemaValue.value = values.table_schema;
       },
       triggerFields: ['table_schema'],
     },

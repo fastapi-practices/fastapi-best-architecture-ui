@@ -32,7 +32,8 @@ export function useDictTypeColumns(
       type: 'seq',
       width: 50,
     },
-    { field: 'name', title: '名称' },
+    { field: 'name', title: '名称', minWidth: 120 },
+    { field: 'code', title: '类型编码', minWidth: 140 },
     { field: 'remark', title: $t('common.table.mark'), align: 'left' },
     {
       field: 'operation',
@@ -42,6 +43,8 @@ export function useDictTypeColumns(
       width: 130,
       cellRender: {
         attrs: {
+          nameField: 'name',
+          nameTitle: '字典类型',
           onClick: onActionClick,
         },
         name: 'CellOperation',
@@ -54,6 +57,11 @@ export function useDictTypeColumns(
 export const dictTypeSchema: VbenFormSchema[] = [
   {
     component: 'Input',
+    fieldName: 'id',
+    hide: true,
+  },
+  {
+    component: 'Input',
     fieldName: 'name',
     label: '类型名称',
     rules: 'required',
@@ -62,25 +70,13 @@ export const dictTypeSchema: VbenFormSchema[] = [
     component: 'Input',
     fieldName: 'code',
     label: '类型编码',
+    dependencies: {
+      disabled: (values) => !!values.id,
+      triggerFields: ['id'],
+    },
     rules: z.string().regex(/^[A-Z_]+$/i, {
       message: '只能包含英文字母和下划线',
     }),
-  },
-  {
-    component: 'RadioGroup',
-    componentProps: {
-      buttonStyle: 'solid',
-      // options: [
-      //   { label: $t('common.enabled'), value: 1 },
-      //   { label: $t('common.disabled'), value: 0 },
-      // ],
-      options: getDictOptions(DictEnum.SYS_STATUS),
-      optionType: 'button',
-    },
-    defaultValue: 1,
-    fieldName: 'status',
-    label: '状态',
-    rules: 'required',
   },
   {
     component: 'Textarea',
@@ -135,6 +131,8 @@ export function useDictDataColumns(
       width: 130,
       cellRender: {
         attrs: {
+          nameField: 'label',
+          nameTitle: '字典数据',
           onClick: onActionClick,
         },
         name: 'CellOperation',

@@ -8,7 +8,7 @@ import type {
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
 
-import { computed, ref } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
 
 import { useVbenModal, VbenButton } from '@vben/common-ui';
 import { EmptyIcon, MaterialSymbolsAdd } from '@vben/icons';
@@ -66,7 +66,7 @@ const gridOptions: VxeTableGridOptions<DictDataResult> = {
     ajax: {
       query: async ({ page }, formValues) => {
         if (!dictTypeId.value) {
-          return [];
+          return { items: [], total: 0 };
         }
 
         const params = {
@@ -153,32 +153,42 @@ const [Modal, modalApi] = useVbenModal({
       if (data) {
         formData.value = data;
         formApi.setValues(data);
+      } else {
+        formData.value = undefined;
       }
     }
   },
 });
 
-emitter.on('rowClick', async (value) => {
+function onDictTypeRowClick(value: number) {
   dictTypeId.value = value;
   onRefresh();
+}
+
+emitter.on('rowClick', onDictTypeRowClick);
+
+onUnmounted(() => {
+  emitter.off('rowClick', onDictTypeRowClick);
 });
 </script>
 
 <template>
-  <Grid table-title="字典数据">
+  <Grid :table-title="$t('dict.data')">
     <template #toolbar-tools>
       <VbenButton
         :disabled="dictTypeId === 0"
         @click="() => modalApi.setData({ type_id: dictTypeId }).open()"
       >
         <MaterialSymbolsAdd class="size-5" />
-        新增
+        {{ $t('dict.add') }}
       </VbenButton>
     </template>
     <template #empty>
       <slot name="empty">
         <EmptyIcon class="mx-auto" />
-        <div class="mt-2">点击字典类型行以获取字典数据</div>
+        <div class="mt-2">
+          {{ dictTypeId === 0 ? $t('dict.selectType') : $t('dict.emptyData') }}
+        </div>
       </slot>
     </template>
   </Grid>

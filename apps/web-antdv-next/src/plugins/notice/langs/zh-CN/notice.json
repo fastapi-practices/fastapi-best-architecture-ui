@@ -1,3 +1,10 @@
 {
-  "menu": "通知公告"
+  "menu": "通知公告",
+  "title": "标题",
+  "type": "类型",
+  "status": "状态",
+  "content": "内容",
+  "preview": "预览",
+  "add": "新增通知公告",
+  "previewTitle": "通知公告预览"
 }

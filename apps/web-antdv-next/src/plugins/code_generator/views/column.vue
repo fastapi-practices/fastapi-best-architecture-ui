@@ -87,11 +87,12 @@ function onRefresh() {
   gridApi.query();
 }
 
+const downloadLoading = ref(false);
+
 const [Drawer, drawerApi] = useVbenDrawer({
   destroyOnClose: true,
-  closable: false,
-  cancelText: '预览',
-  confirmText: '下载',
+  showConfirmButton: false,
+  cancelText: $t('common.cancel'),
   class: 'w-2/3',
   onOpenChange(isOpen) {
     if (isOpen) {
@@ -105,22 +106,24 @@ const [Drawer, drawerApi] = useVbenDrawer({
       gridApi.setLoading(false);
     }
   },
-  onCancel: () => {
-    previewModalApi.setData({ pk: drawerApi.getData().pk }).open();
-  },
-  onConfirm: async () => {
-    drawerApi.setState({ confirmLoading: true });
-    try {
-      const res = await downloadCodeApi(drawerApi.getData().pk);
-      downloadFileFromBlob({ fileName: 'fba_generator', source: res });
-      message.success('代码包已开始下载');
-    } catch (error) {
-      console.error(error);
-    } finally {
-      drawerApi.setState({ confirmLoading: false });
-    }
-  },
 });
+
+function openPreview() {
+  previewModalApi.setData({ pk: drawerApi.getData().pk }).open();
+}
+
+async function downloadCode() {
+  downloadLoading.value = true;
+  try {
+    const res = await downloadCodeApi(drawerApi.getData().pk);
+    downloadFileFromBlob({ fileName: 'fba_generator', source: res });
+    message.success($t('code_generator.downloadStarted'));
+  } catch (error) {
+    console.error(error);
+  } finally {
+    downloadLoading.value = false;
+  }
+}
 
 async function showGenerate() {
   const paths = await getCodeGenPathApi(drawerApi.getData().pk);
@@ -160,7 +163,7 @@ async function showGenerate() {
       ]),
     ]),
     icon: 'error',
-    confirmText: '不怂！就是干',
+    confirmText: $t('code_generator.confirmGenerate'),
   })
     .then(async () => {
       generateLoading.value = true;
@@ -182,7 +185,7 @@ interface formCodeGenColumnParams extends CodeGenColumnParams {
 
 const formData = ref<formCodeGenColumnParams>();
 
-const modalTile = computed(() => {
+const modalTitle = computed(() => {
   return formData.value?.id
     ? $t('ui.actionTitle.edit', ['模型列'])
     : $t('ui.actionTitle.create', ['模型列']);
@@ -223,6 +226,9 @@ const [Modal, modalApi] = useVbenModal({
         if (!formData.value.id) {
           formApi.setFieldValue('gen_business_id', drawerApi.getData().pk);
         }
+      } else {
+        formData.value = undefined;
+        formApi.setFieldValue('gen_business_id', drawerApi.getData().pk);
       }
     }
   },
@@ -250,16 +256,22 @@ const [PreviewModal, previewModalApi] = useVbenModal({
       </a-alert>
       <VbenButton @click="modalApi.setData(null).open()" class="ml-3">
         <MaterialSymbolsAdd class="size-5" />
-        新增模型列
+        {{ $t('code_generator.addColumn') }}
       </VbenButton>
     </template>
     <template #center-footer>
+      <a-button class="mr-2" @click="openPreview">
+        {{ $t('code_generator.preview') }}
+      </a-button>
+      <a-button class="mr-2" :loading="downloadLoading" @click="downloadCode">
+        {{ $t('code_generator.download') }}
+      </a-button>
       <a-button :loading="generateLoading" type="primary" @click="showGenerate">
-        生成
+        {{ $t('code_generator.generate') }}
       </a-button>
     </template>
   </Drawer>
-  <Modal :title="modalTile">
+  <Modal :title="modalTitle">
     <Form />
   </Modal>
   <PreviewModal />

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { h, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, h, nextTick, onMounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { $t } from '@vben/locales';
 
 import Email from './email.vue';
 import Login from './login.vue';
@@ -13,24 +14,24 @@ const userSecurityRef = ref();
 const loginRef = ref();
 const emailRef = ref();
 
-const tabItems = [
+const tabItems = computed(() => [
   {
     key: '0',
-    label: '安全配置',
+    label: $t('config.security'),
     icon: () => h('span', { class: 'icon-[carbon--security] -mb-1 size-5' }),
   },
   {
     key: '1',
-    label: '登录配置',
+    label: $t('config.login'),
     icon: () =>
       h('span', { class: 'icon-[majesticons--lock-line] -mb-1 size-5' }),
   },
   {
     key: '2',
-    label: '邮件配置',
+    label: $t('config.email'),
     icon: () => h('span', { class: 'icon-[ic--outline-email] -mb-1 size-5' }),
   },
-];
+]);
 
 watch(activeKey, async (newValue) => {
   if (newValue === '0') {

@@ -1,3 +1,8 @@
 {
-  "menu": "Parameter config"
+  "menu": "Settings",
+  "security": "Security",
+  "login": "Login",
+  "email": "Email",
+  "status": "Status",
+  "statusHelp": "Local settings are used by default. Enable this to apply these values"
 }

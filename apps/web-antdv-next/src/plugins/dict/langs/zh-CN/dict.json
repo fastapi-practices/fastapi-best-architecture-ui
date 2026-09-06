@@ -1,3 +1,17 @@
 {
-  "menu": "字典管理"
+  "menu": "字典管理",
+  "type": "字典类型",
+  "data": "字典数据",
+  "name": "名称",
+  "code": "类型编码",
+  "status": "状态",
+  "typeName": "类型名称",
+  "label": "数据标签",
+  "value": "值",
+  "color": "标签样式",
+  "sort": "排序",
+  "add": "新增",
+  "codeRule": "只能包含英文字母和下划线",
+  "selectType": "点击左侧字典类型行以查看数据",
+  "emptyData": "暂无字典数据"
 }
