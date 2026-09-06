@@ -22,15 +22,19 @@ const actionLoadingSource = ref<null | string>(null);
 const securityOptions = computed(() => [
   {
     source: 'Github' as const,
-    description: '绑定 Github 账号',
+    description: $t('page.profile.bindGithub'),
     status: bindings.value?.includes('Github'),
-    statusString: bindings.value?.includes('Github') ? '已绑定' : '未绑定',
+    statusString: bindings.value?.includes('Github')
+      ? $t('page.profile.bound')
+      : $t('common.unbound'),
   },
   {
     source: 'Google' as const,
-    description: '绑定 Google 账号',
+    description: $t('page.profile.bindGoogle'),
     status: bindings.value?.includes('Google'),
-    statusString: bindings.value?.includes('Google') ? '已绑定' : '未绑定',
+    statusString: bindings.value?.includes('Google')
+      ? $t('page.profile.bound')
+      : $t('common.unbound'),
   },
 ]);
 
@@ -72,7 +76,7 @@ const OAuth2Binding = async (ob: OAuth2BindingParams) => {
 function deleteConfirm(ob: OAuth2BindingParams) {
   confirm({
     icon: 'warning',
-    content: '确认解绑此账号吗？',
+    content: $t('page.profile.unbindConfirm'),
   }).then(async () => {
     actionLoadingSource.value = ob.source;
     try {
@@ -128,7 +132,7 @@ onMounted(() => {
           :loading="actionLoadingSource === item.source"
           @click="OAuth2Binding({ source: item.source })"
         >
-          绑定
+          {{ $t('common.bind') }}
         </a-button>
         <a-button
           v-else
@@ -136,7 +140,7 @@ onMounted(() => {
           :loading="actionLoadingSource === item.source"
           @click="deleteConfirm({ source: item.source })"
         >
-          解绑
+          {{ $t('common.unbind') }}
         </a-button>
       </div>
     </div>

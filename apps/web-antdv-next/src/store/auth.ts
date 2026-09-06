@@ -9,7 +9,7 @@ import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
-import { notification } from 'antdv-next';
+import { message, notification } from 'antdv-next';
 import { defineStore } from 'pinia';
 
 import {
@@ -114,7 +114,7 @@ export const useAuthStore = defineStore('auth', () => {
       return true;
     }
 
-    console.error('Missing or invalid access_token or session_uuid');
+    message.error($t('page.auth.oauthFailed'));
     return false;
   }
 
@@ -140,6 +140,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUserInfo() {
     const userInfo = await getUserInfoApi();
+    userInfo.realName = userInfo.nickname || userInfo.username || '';
     userStore.setUserInfo(userInfo);
     dictStore.resetCache();
     return userInfo;

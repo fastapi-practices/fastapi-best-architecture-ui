@@ -56,10 +56,17 @@ function setupAccessGuard(router: Router) {
       to.path === '/oauth2/callback' ||
       window.location.pathname === '/oauth2/callback'
     ) {
-      await authStore.oauth2Login();
-      // 为了兼容 vue-router hash 模式，这里直接重定向到域名
-      // 再由守卫自动完成默认地址重定向
-      window.location.replace(window.location.origin);
+      const ok = await authStore.oauth2Login();
+      if (ok) {
+        // 为了兼容 vue-router hash 模式，这里直接重定向到域名
+        // 再由守卫自动完成默认地址重定向
+        window.location.replace(window.location.origin);
+        return false;
+      }
+      return {
+        path: LOGIN_PATH,
+        replace: true,
+      };
     }
 
     // 基本路由，这些路由不需要进入权限拦截

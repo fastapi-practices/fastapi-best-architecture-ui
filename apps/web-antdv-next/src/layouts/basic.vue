@@ -222,9 +222,8 @@ watch(
       <UserDropdown
         :avatar
         :menus
-        :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        :text="userStore.userInfo?.realName || userStore.userInfo?.nickname"
+        :description="userStore.userInfo?.email || userStore.userInfo?.username"
         @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout"
       />

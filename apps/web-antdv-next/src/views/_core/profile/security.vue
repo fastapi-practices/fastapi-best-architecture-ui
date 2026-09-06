@@ -8,6 +8,7 @@ import type {
 import { computed } from 'vue';
 
 import { useVbenModal, VbenButton } from '@vben/common-ui';
+import { $t } from '@vben/locales';
 import { useUserStore } from '@vben/stores';
 
 import { message } from 'antdv-next';
@@ -25,30 +26,49 @@ import { emailSchema, passwordSchema, phoneSchema } from './data';
 const authStore = useAuthStore();
 const userStore = useUserStore();
 
+function maskPhone(phone?: string) {
+  if (!phone) {
+    return $t('common.unbound');
+  }
+  return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+}
+
+function maskEmail(email?: string) {
+  if (!email) {
+    return $t('common.unbound');
+  }
+  const [name, domain] = email.split('@');
+  if (!name || !domain) {
+    return email;
+  }
+  const visible = name.slice(0, 2);
+  return `${visible}***@${domain}`;
+}
+
 const securityOptions = computed(() => [
   {
     class: 'icon-[fluent--phone-48-regular]',
-    title: '安全手机',
-    description: '手机号可用于登录、身份验证、密码找回、通知接收',
+    title: $t('page.profile.securePhone'),
+    description: $t('page.profile.securePhoneDesc'),
     type: 'phone',
     status: !!userStore.userInfo?.phone,
-    statusString: userStore.userInfo?.phone ? '已绑定' : '未绑定',
+    statusString: maskPhone(userStore.userInfo?.phone),
   },
   {
     class: 'icon-[ic--outline-email]',
-    title: '安全邮箱',
-    description: '邮箱可用于登录、身份验证、密码找回、通知接收',
+    title: $t('page.profile.secureEmail'),
+    description: $t('page.profile.secureEmailDesc'),
     type: 'email',
     status: !!userStore.userInfo?.email,
-    statusString: userStore.userInfo?.email ? '已绑定' : '未绑定',
+    statusString: maskEmail(userStore.userInfo?.email),
   },
   {
     class: 'icon-[mdi--password-outline]',
-    title: '登录密码',
-    description: '为了您的账号安全，建议定期修改密码',
+    title: $t('page.profile.loginPassword'),
+    description: $t('page.profile.loginPasswordDesc'),
     type: 'password',
     status: true,
-    statusString: '已设置',
+    statusString: $t('page.profile.configured'),
   },
 ]);
 
@@ -67,7 +87,7 @@ const [phoneModal, phoneModalApi] = useVbenModal({
       const data = await phoneFormApi.getValues<SysUpdateUserPhoneParams>();
       try {
         await updateSysUserPhoneApi(data);
-        message.success('手机号更新成功');
+        message.success($t('page.profile.phoneUpdated'));
         await phoneModalApi.close();
         await authStore.fetchUserInfo();
       } finally {
@@ -101,7 +121,7 @@ const [emailModal, emailModalApi] = useVbenModal({
       const data = await emailFormApi.getValues<SysUpdateUserEmailParams>();
       try {
         await updateSysUserEmailApi(data);
-        message.success('邮箱更新成功');
+        message.success($t('page.profile.emailUpdated'));
         await emailModalApi.close();
         await authStore.fetchUserInfo();
       } finally {
@@ -135,7 +155,7 @@ const [passwordModal, passwordModalApi] = useVbenModal({
       const data = await passwordFormApi.getValues<SysUpdatePasswordParams>();
       try {
         await updateSysUserPasswordApi(data);
-        message.success('密码更新成功，请重新登录');
+        message.success($t('page.profile.passwordUpdated'));
         await passwordModalApi.close();
         await authStore.logout(false);
       } finally {
@@ -156,10 +176,10 @@ const [passwordModal, passwordModalApi] = useVbenModal({
 
 const openModal = (type: string) => {
   if (type === 'phone') {
-    phoneModalApi.setData(null).open();
+    phoneModalApi.setData({ phone: userStore.userInfo?.phone }).open();
   }
   if (type === 'email') {
-    emailModalApi.setData(null).open();
+    emailModalApi.setData({ email: userStore.userInfo?.email }).open();
   }
   if (type === 'password') {
     passwordModalApi.setData(null).open();
@@ -197,17 +217,29 @@ const openModal = (type: string) => {
         :variant="item.status ? 'outline' : 'default'"
         @click="openModal(item.type)"
       >
-        {{ item.status ? '修改' : '绑定' }}
+        {{ item.status ? $t('common.edit') : $t('common.bind') }}
       </VbenButton>
     </div>
   </div>
-  <phoneModal title="绑定手机号">
+  <phoneModal
+    :title="
+      userStore.userInfo?.phone
+        ? $t('page.profile.editPhone')
+        : $t('page.profile.bindPhone')
+    "
+  >
     <phoneForm />
   </phoneModal>
-  <emailModal title="绑定邮箱">
+  <emailModal
+    :title="
+      userStore.userInfo?.email
+        ? $t('page.profile.editEmail')
+        : $t('page.profile.bindEmail')
+    "
+  >
     <emailForm />
   </emailModal>
-  <passwordModal title="重置密码">
+  <passwordModal :title="$t('page.profile.editPassword')">
     <passwordForm />
   </passwordModal>
 </template>
