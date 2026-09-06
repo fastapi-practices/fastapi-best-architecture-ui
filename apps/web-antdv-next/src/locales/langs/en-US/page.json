@@ -11,23 +11,6 @@
     "oauthFailed": "Third-party login failed, please try again",
     "oauthCallback": "Completing authorization..."
   },
-  "about": {
-    "title": "About",
-    "description": "Frontend admin UI for FastAPI Best Architecture, built with Vue 3, Vite and antdv-next. It covers system management, scheduling, monitoring, logs and plugin extensions",
-    "name": "FBA UI",
-    "view": "View",
-    "version": "Version",
-    "license": "License",
-    "buildTime": "Last build time",
-    "homepage": "Homepage",
-    "docs": "Documentation",
-    "preview": "Preview",
-    "github": "Github",
-    "author": "Author",
-    "basicInfo": "Basic info",
-    "prodDeps": "Production dependencies",
-    "devDeps": "Development dependencies"
-  },
   "profile": {
     "basicInfo": "Basic info",
     "username": "Username",

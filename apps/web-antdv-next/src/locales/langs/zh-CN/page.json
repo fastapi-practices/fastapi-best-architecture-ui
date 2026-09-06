@@ -11,23 +11,6 @@
     "oauthFailed": "第三方登录失败，请重试",
     "oauthCallback": "正在完成授权..."
   },
-  "about": {
-    "title": "关于项目",
-    "description": "FastAPI Best Architecture 的前端管理界面，基于 Vue 3、Vite 与 antdv-next，提供系统管理、任务调度、监控日志与插件扩展能力",
-    "name": "FBA UI",
-    "view": "点击查看",
-    "version": "版本号",
-    "license": "开源许可协议",
-    "buildTime": "最后构建时间",
-    "homepage": "主页",
-    "docs": "文档地址",
-    "preview": "预览地址",
-    "github": "Github",
-    "author": "作者",
-    "basicInfo": "基本信息",
-    "prodDeps": "生产环境依赖",
-    "devDeps": "开发环境依赖"
-  },
   "profile": {
     "basicInfo": "基本信息",
     "username": "用户名",
