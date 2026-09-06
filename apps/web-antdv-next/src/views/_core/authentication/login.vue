@@ -173,6 +173,10 @@ onUnmounted(() => {
   <AuthenticationLogin
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
+    :show-code-login="false"
+    :show-forget-password="false"
+    :show-qrcode-login="false"
+    :show-register="false"
     @submit="authStore.authLogin"
   >
     <template #third-party-login>

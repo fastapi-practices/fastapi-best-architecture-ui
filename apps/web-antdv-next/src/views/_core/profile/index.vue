@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { ColPage } from '@vben/common-ui';
+import { $t } from '@vben/locales';
 
 import BasicInfo from '#/views/_core/profile/basic-info.vue';
 import Binding from '#/views/_core/profile/binding.vue';
 import OnlineDevice from '#/views/_core/profile/online-device.vue';
 import Security from '#/views/_core/profile/security.vue';
 
-const tabList = [
+const tabList = computed(() => [
   {
-    key: '0',
-    tab: '安全设置',
+    key: 'security',
+    tab: $t('page.profile.securityTab'),
   },
   {
-    key: '1',
-    tab: '第三方账号',
+    key: 'binding',
+    tab: $t('page.profile.bindingTab'),
   },
   {
-    key: '2',
-    tab: '在线设备',
+    key: 'devices',
+    tab: $t('page.profile.devicesTab'),
   },
-];
-const tabKey = ref<string>('0');
+]);
+const tabKey = ref<string>('security');
 
 const onTabChange = (value: string) => {
   tabKey.value = value;
@@ -51,10 +52,10 @@ const onTabChange = (value: string) => {
       :active-tab-key="tabKey"
       @tab-change="(key: string) => onTabChange(key)"
     >
-      <div v-if="tabKey === '0'">
+      <div v-if="tabKey === 'security'">
         <Security />
       </div>
-      <div v-else-if="tabKey === '1'">
+      <div v-else-if="tabKey === 'binding'">
         <Binding />
       </div>
       <div v-else>
