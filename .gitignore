@@ -60,6 +60,8 @@ vite.config.ts.*
 skills-lock.json
 .atomcode
 datalog
+.codegraph/
+.playwright-mcp/
 
 # 升级 vben 时需要删除的文件(夹)
 .changeset
