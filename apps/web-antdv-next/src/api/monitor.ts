@@ -24,7 +24,7 @@ export interface OnlineMonitorResult {
   device: string;
   status: number;
   last_login_time: string;
-  expires_time: number;
+  expire_time: string;
 }
 
 export interface MonitorOnlineParams {
