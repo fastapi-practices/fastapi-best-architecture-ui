@@ -232,9 +232,9 @@ export const emailSchema: VbenFormSchema[] = [
   },
   {
     component: 'InputPassword',
+    description: '账号授权密码',
     fieldName: 'EMAIL_PASSWORD',
     label: '邮箱密码',
-    help: '账号授权密码',
     rules: 'required',
   },
 ];
