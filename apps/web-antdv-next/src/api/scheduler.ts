@@ -54,7 +54,7 @@ export interface CreateTaskSchedulerParams {
 
 export interface TaskSchedulerResult extends CreateTaskSchedulerParams {
   id: number;
-  enabled: boolean;
+  status: number;
   total_run_count: number;
   last_run_time: string;
   created_time: string;
