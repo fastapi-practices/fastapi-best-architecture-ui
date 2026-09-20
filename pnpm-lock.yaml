@@ -660,9 +660,6 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
-      mitt:
-        specifier: 'catalog:'
-        version: 3.0.1
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))
@@ -676,17 +673,29 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
 
-  apps/web-antdv-next/src/plugins/ai-buddy: {}
+  apps/web-antdv-next/src/plugins/ai-buddy:
+    dependencies:
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.3.0(vue@3.5.38(typescript@6.0.3))
 
   apps/web-antdv-next/src/plugins/ai-buddy-group: {}
 
   apps/web-antdv-next/src/plugins/aliyun-sms: {}
 
-  apps/web-antdv-next/src/plugins/code-generator: {}
+  apps/web-antdv-next/src/plugins/code-generator:
+    dependencies:
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.3.0(vue@3.5.38(typescript@6.0.3))
 
   apps/web-antdv-next/src/plugins/config: {}
 
-  apps/web-antdv-next/src/plugins/dict: {}
+  apps/web-antdv-next/src/plugins/dict:
+    dependencies:
+      mitt:
+        specifier: 'catalog:'
+        version: 3.0.1
 
   apps/web-antdv-next/src/plugins/email: {}
 
