@@ -213,7 +213,7 @@ const handleStatusChange = async (
   statusLoadingMap.value[row.id] = true;
   try {
     await updateTaskSchedulerStatusApi(row.id);
-    row.enabled = checked;
+    row.status = checked ? 1 : 0;
     message.success($t('ui.actionMessage.operationSuccess'));
   } catch (error) {
     console.error(error);
@@ -281,11 +281,11 @@ onUnmounted(() => {
           </a-tag>
         </a-popover>
       </template>
-      <template #enabled="{ row }">
+      <template #status="{ row }">
         <a-switch
-          :checked="row.enabled"
-          :checked-value="true"
-          :un-checked-value="false"
+          :checked="row.status === 1"
+          :checked-value="1"
+          :un-checked-value="0"
           checked-children="启用"
           un-checked-children="禁用"
           :loading="!!statusLoadingMap[row.id]"

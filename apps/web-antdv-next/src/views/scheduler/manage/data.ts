@@ -79,10 +79,10 @@ export function useColumns(
       },
     },
     {
-      field: 'enabled',
+      field: 'status',
       title: '状态',
       width: 100,
-      slots: { default: 'enabled' },
+      slots: { default: 'status' },
     },
     {
       field: 'total_run_count',
