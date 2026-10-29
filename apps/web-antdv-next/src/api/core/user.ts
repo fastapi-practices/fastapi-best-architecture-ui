@@ -48,7 +48,7 @@ export interface SysUpdateUserParams {
   avatar?: string;
   email?: string;
   phone?: string;
-  roles: number[];
+  role_ids: number[];
 }
 
 export interface SysAddUserParams extends SysUpdateUserParams {
