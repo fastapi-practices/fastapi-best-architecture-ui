@@ -238,7 +238,7 @@ export function useEditSchema(roleSelectOptions: any): VbenFormSchema[] {
           );
         },
       },
-      fieldName: 'roles',
+      fieldName: 'role_ids',
       label: '角色',
       rules: 'selectRequired',
     },
@@ -301,7 +301,7 @@ export function useAddSchema(roleSelectOptions: any): VbenFormSchema[] {
           );
         },
       },
-      fieldName: 'roles',
+      fieldName: 'role_ids',
       label: '角色',
       rules: 'selectRequired',
     },

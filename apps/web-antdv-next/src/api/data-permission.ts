@@ -86,8 +86,13 @@ export async function updateSysDataScope(
   return requestClient.put(`/api/v1/sys/data-scopes/${pk}`, data);
 }
 
-export async function updateSysDataScopeRulesApi(pk: number, rules: number[]) {
-  return requestClient.put(`/api/v1/sys/data-scopes/${pk}/rules`, { rules });
+export async function updateSysDataScopeRulesApi(
+  pk: number,
+  ruleIds: number[],
+) {
+  return requestClient.put(`/api/v1/sys/data-scopes/${pk}/rules`, {
+    rule_ids: ruleIds,
+  });
 }
 
 export async function deleteSysDataScopeApi(pks: number[]) {

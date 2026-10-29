@@ -200,7 +200,7 @@ const [editModal, editModalApi] = useVbenModal({
         formApi.setValues({
           ...data,
           dept_id: data.dept_id ?? data.dept?.id,
-          roles: data.roles?.map((item: SysRoleResult) => item.id) || [],
+          role_ids: data.roles?.map((item: SysRoleResult) => item.id) || [],
         });
       }
     }

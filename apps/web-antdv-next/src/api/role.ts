@@ -54,12 +54,19 @@ export async function updateSysRoleApi(pk: number, data: CreateSysRoleParams) {
   return requestClient.put(`/api/v1/sys/roles/${pk}`, data);
 }
 
-export async function updateSysRoleMenuApi(pk: number, menus: number[]) {
-  return requestClient.put(`/api/v1/sys/roles/${pk}/menus`, { menus });
+export async function updateSysRoleMenuApi(pk: number, menuIds: number[]) {
+  return requestClient.put(`/api/v1/sys/roles/${pk}/menus`, {
+    menu_ids: menuIds,
+  });
 }
 
-export async function updateSysRoleDataScopesApi(pk: number, scopes: number[]) {
-  return requestClient.put(`/api/v1/sys/roles/${pk}/scopes`, { scopes });
+export async function updateSysRoleDataScopesApi(
+  pk: number,
+  scopeIds: number[],
+) {
+  return requestClient.put(`/api/v1/sys/roles/${pk}/scopes`, {
+    scope_ids: scopeIds,
+  });
 }
 
 export async function deleteSysRoleApi(pks: number[]) {
