@@ -683,12 +683,6 @@ importers:
 
   apps/web-antdv-next/src/plugins/aliyun-sms: {}
 
-  apps/web-antdv-next/src/plugins/code-generator:
-    dependencies:
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 14.3.0(vue@3.5.38(typescript@6.0.3))
-
   apps/web-antdv-next/src/plugins/config: {}
 
   apps/web-antdv-next/src/plugins/dict:
